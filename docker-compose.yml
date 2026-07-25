@@ -1,0 +1,100 @@
+name: corebackendkit
+
+services:
+  traefik:
+    image: traefik:v3.0
+    command:
+      - --configFile=/etc/traefik/traefik.yml
+    ports:
+      - "80:80"
+      - "8080:8080" # dashboard (dev only)
+    volumes:
+      - ./infra/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./infra/traefik/dynamic:/etc/traefik/dynamic:ro
+    networks:
+      - backbone
+    restart: unless-stopped
+
+  auth-postgres:
+    image: postgres:16-alpine
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${AUTH_DB_USER}
+      POSTGRES_PASSWORD: ${AUTH_DB_PASSWORD}
+      POSTGRES_DB: ${AUTH_DB_NAME}
+    volumes:
+      - auth_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${AUTH_DB_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - backbone
+    restart: unless-stopped
+
+  user-postgres:
+    image: postgres:16-alpine
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${USER_DB_USER}
+      POSTGRES_PASSWORD: ${USER_DB_PASSWORD}
+      POSTGRES_DB: ${USER_DB_NAME}
+    volumes:
+      - user_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${USER_DB_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - backbone
+    restart: unless-stopped
+
+  user-service:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile
+      args:
+        APP_NAME: user-service
+    env_file: .env
+    depends_on:
+      user-postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('net').connect(process.env.USER_GRPC_PORT||5001,'localhost').on('connect',()=>process.exit(0)).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - backbone
+    restart: unless-stopped
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile
+      args:
+        APP_NAME: auth-service
+    env_file: .env
+    depends_on:
+      auth-postgres:
+        condition: service_healthy
+      user-service:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:'+(process.env.AUTH_HTTP_PORT||3001)+'/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - backbone
+    restart: unless-stopped
+
+networks:
+  backbone:
+    driver: bridge
+
+volumes:
+  auth_postgres_data:
+  user_postgres_data:

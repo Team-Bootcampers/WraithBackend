@@ -1,0 +1,14 @@
+http:
+  middlewares:
+    default-headers:
+      headers:
+        browserXssFilter: true
+        contentTypeNosniff: true
+        frameDeny: true
+
+    # Örnek: gateway'e uygulanacak rate limit. Kullanmak için router label'ına
+    # "traefik.http.routers.gateway.middlewares=rate-limit@file" ekleyin.
+    rate-limit:
+      rateLimit:
+        average: 100
+        burst: 50
