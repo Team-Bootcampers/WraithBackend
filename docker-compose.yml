@@ -86,6 +86,80 @@ services:
       - backbone
     restart: unless-stopped
 
+  hotel-postgres:
+    image: postgres:16-alpine
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${HOTEL_DB_USER}
+      POSTGRES_PASSWORD: ${HOTEL_DB_PASSWORD}
+      POSTGRES_DB: ${HOTEL_DB_NAME}
+    volumes:
+      - hotel_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${HOTEL_DB_USER}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - backbone
+    restart: unless-stopped
+
+  hotel-service:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile
+      args:
+        APP_NAME: hotel-service
+    env_file: .env
+    depends_on:
+      hotel-postgres:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "node", "-e", "require('net').connect(process.env.HOTEL_GRPC_PORT||5003,'localhost').on('connect',()=>process.exit(0)).on('error',()=>process.exit(1))" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - backbone
+    restart: unless-stopped
+
+  restaurant-postgres:
+    image: postgres:16-alpine
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${RESTAURANT_DB_USER}
+      POSTGRES_PASSWORD: ${RESTAURANT_DB_PASSWORD}
+      POSTGRES_DB: ${RESTAURANT_DB_NAME}
+    volumes:
+      - restaurant_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${RESTAURANT_DB_USER}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - backbone
+    restart: unless-stopped
+
+  restaurant-service:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile
+      args:
+        APP_NAME: restaurant-service
+    env_file: .env
+    depends_on:
+      restaurant-postgres:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "node", "-e", "require('net').connect(process.env.RESTAURANT_GRPC_PORT||5004,'localhost').on('connect',()=>process.exit(0)).on('error',()=>process.exit(1))" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - backbone
+    restart: unless-stopped
+
   auth-service:
     build:
       context: .
@@ -119,6 +193,10 @@ services:
         condition: service_started
       ai-service:
         condition: service_started
+      hotel-service:
+        condition: service_started
+      restaurant-service:
+        condition: service_started
       # Gateway bootstrap'ta auth-service spec'ini fetch eder;
       # auth-service sağlıklı olmadan başlamaz.
       auth-service:
@@ -150,3 +228,5 @@ networks:
 volumes:
   auth_postgres_data:
   user_postgres_data:
+  hotel_postgres_data:
+  restaurant_postgres_data:

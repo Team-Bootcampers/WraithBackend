@@ -37,6 +37,26 @@
         "tsConfigPath": "apps/ai-service/tsconfig.app.json"
       }
     },
+    "hotel-service": {
+      "type": "application",
+      "root": "apps/hotel-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/hotel-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/hotel-service/tsconfig.app.json",
+        "assets": ["data/**/*.json"]
+      }
+    },
+    "restaurant-service": {
+      "type": "application",
+      "root": "apps/restaurant-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/restaurant-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/restaurant-service/tsconfig.app.json",
+        "assets": ["data/**/*.json"]
+      }
+    },
     "gateway": {
       "type": "application",
       "root": "apps/gateway",
