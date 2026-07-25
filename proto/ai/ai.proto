@@ -8,6 +8,7 @@ service AiService {
   rpc AnalyzeTravelPersonality (AnalyzeTravelPersonalityRequest) returns (AnalyzeTravelPersonalityResponse);
   rpc GenerateTravelRoute (GenerateTravelRouteRequest) returns (GenerateTravelRouteResponse);
   rpc RecommendRestaurants (RecommendRestaurantsRequest) returns (RecommendRestaurantsResponse);
+  rpc RecommendAttractions (RecommendAttractionsRequest) returns (RecommendAttractionsResponse);
 }
 
 message AnalyzeTravelPersonalityRequest {
@@ -43,6 +44,20 @@ message RecommendRestaurantsRequest {
 
 message RecommendRestaurantsResponse {
   // JSON.stringify edilmiş, kişiliğe uygun seçilmiş restoran listesi (RestaurantResponse[] ile aynı şema).
+  string result = 1;
+}
+
+message RecommendAttractionsRequest {
+  string country = 1;
+  string city = 2;
+  // Kullanıcının seyahat kişiliği analiz metni.
+  string personalityAnalysis = 3;
+  // JSON.stringify edilmiş aday gezilecek yer listesi (attraction-service'ten gelen AttractionResponse[]).
+  string attractions = 4;
+}
+
+message RecommendAttractionsResponse {
+  // JSON.stringify edilmiş, kişiliğe uygun seçilmiş gezilecek yer listesi (AttractionResponse[] ile aynı şema).
   string result = 1;
 }
 

@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { GeminiClientService } from '../gemini/gemini-client.service';
 import { RESTAURANT_RECOMMENDATION_RESPONSE_SCHEMA } from './restaurant-recommendation.schema';
+import { ATTRACTION_RECOMMENDATION_RESPONSE_SCHEMA } from './attraction-recommendation.schema';
 
 export interface RestaurantPrice {
   amount: number;
@@ -14,6 +15,23 @@ export interface RestaurantCandidate {
   rating: number;
   address: string;
   price: RestaurantPrice;
+  images: string[];
+  country: string;
+  cityName: string;
+}
+
+export interface AttractionPrice {
+  amount: number;
+  currency: string;
+  period: string;
+}
+
+export interface AttractionCandidate {
+  id: string;
+  name: string;
+  rating: number;
+  address: string;
+  price: AttractionPrice;
   images: string[];
   country: string;
   cityName: string;
@@ -140,6 +158,43 @@ export class AiService {
       return JSON.parse(text) as RestaurantCandidate[];
     } catch {
       throw new InternalServerErrorException('Gemini geçerli bir restoran önerisi JSON\'u döndürmedi');
+    }
+  }
+
+  async recommendAttractions(
+    country: string,
+    city: string,
+    personalityAnalysis: string,
+    attractions: AttractionCandidate[],
+  ): Promise<AttractionCandidate[]> {
+    const prompt = [
+      'Sen uzman bir seyahat asistanısın. Amacın, verilen aday gezilecek yer listesi içinden kullanıcının',
+      'seyahat kişiliği analizine en uygun olanları seçmektir.',
+      '',
+      'GİRDİLER:',
+      `Ülke: ${country}`,
+      `Şehir: ${city}`,
+      `Kullanıcının Kişilik Analizi: ${personalityAnalysis}`,
+      `Aday Gezilecek Yer Listesi (JSON): ${JSON.stringify(attractions)}`,
+      '',
+      'KURALLAR:',
+      '1. Sadece yukarıdaki aday listede bulunan gezilecek yerler arasından seçim yap; yeni yer uydurma.',
+      '2. Seçtiğin her yerin id, name, rating, address, price, images, country, cityName alanlarını',
+      '   aday listedeki değerleriyle BİREBİR aynı şekilde döndür; hiçbir alanı değiştirme.',
+      '3. Gezilecek yerleri, kullanıcının kişiliğine en uygun olandan en az uygun olana doğru sırala.',
+      '4. Aday listede uygun yer yoksa boş dizi döndür.',
+      '5. Sadece response şemasına uyan JSON döndür; markdown kod bloğu, açıklama veya selamlama ekleme.',
+    ].join('\n');
+
+    const text = await this.geminiClient.generateContent(prompt, {
+      responseMimeType: 'application/json',
+      responseSchema: ATTRACTION_RECOMMENDATION_RESPONSE_SCHEMA,
+    });
+
+    try {
+      return JSON.parse(text) as AttractionCandidate[];
+    } catch {
+      throw new InternalServerErrorException('Gemini geçerli bir gezilecek yer önerisi JSON\'u döndürmedi');
     }
   }
 }
