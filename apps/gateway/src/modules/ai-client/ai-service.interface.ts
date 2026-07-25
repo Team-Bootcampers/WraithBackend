@@ -31,10 +31,24 @@ export interface RecommendRestaurantsResponse {
   result: string;
 }
 
+export interface RecommendAttractionsRequest {
+  country: string;
+  city: string;
+  personalityAnalysis: string;
+  // JSON.stringify edilmiş aday gezilecek yer listesi (AttractionResponse[]).
+  attractions: string;
+}
+
+export interface RecommendAttractionsResponse {
+  // JSON.stringify edilmiş, kişiliğe uygun seçilmiş gezilecek yer listesi (AttractionResponse[]).
+  result: string;
+}
+
 export interface AiServiceGrpcClient {
   analyzeTravelPersonality(data: AnalyzeTravelPersonalityRequest): Observable<AnalyzeTravelPersonalityResponse>;
   generateTravelRoute(data: GenerateTravelRouteRequest): Observable<GenerateTravelRouteResponse>;
   recommendRestaurants(data: RecommendRestaurantsRequest): Observable<RecommendRestaurantsResponse>;
+  recommendAttractions(data: RecommendAttractionsRequest): Observable<RecommendAttractionsResponse>;
 }
 
 export interface PlanTripRequest {
