@@ -1,0 +1,477 @@
+[
+  {
+    "country": "Türkiye",
+    "cities": [
+      {
+        "city_name": "İstanbul",
+        "attractions": [
+          {
+            "id": "tr-ist-a01",
+            "name": "Ayasofya Camii",
+            "rating": 4.9,
+            "address": "Sultan Ahmet, Ayasofya Meydanı No:1, 34122 Fatih/İstanbul, Türkiye",
+            "price": { "amount": 25, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr1/600/600", "https://picsum.photos/seed/attr1_2/600/600"]
+          },
+          {
+            "id": "tr-ist-a02",
+            "name": "Topkapı Sarayı Müzesi",
+            "rating": 4.8,
+            "address": "Cankurtaran, 34122 Fatih/İstanbul, Türkiye",
+            "price": { "amount": 45, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr2/600/600", "https://picsum.photos/seed/attr2_2/600/600"]
+          },
+          {
+            "id": "tr-ist-a03",
+            "name": "Galata Kulesi",
+            "rating": 4.7,
+            "address": "Bereketzade, Galata Kulesi, 34421 Beyoğlu/İstanbul, Türkiye",
+            "price": { "amount": 30, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr3/600/600", "https://picsum.photos/seed/attr3_2/600/600"]
+          },
+          {
+            "id": "tr-ist-a04",
+            "name": "Yerebatan Sarnıcı",
+            "rating": 4.8,
+            "address": "Alemdar, Yerebatan Cd. 1/3, 34110 Fatih/İstanbul, Türkiye",
+            "price": { "amount": 20, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr4/600/600", "https://picsum.photos/seed/attr4_2/600/600"]
+          },
+          {
+            "id": "tr-ist-a05",
+            "name": "Dolmabahçe Sarayı",
+            "rating": 4.9,
+            "address": "Vişnezade, Dolmabahçe Cd., 34357 Beşiktaş/İstanbul, Türkiye",
+            "price": { "amount": 35, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr5/600/600", "https://picsum.photos/seed/attr5_2/600/600"]
+          }
+        ]
+      },
+      {
+        "city_name": "Antalya",
+        "attractions": [
+          {
+            "id": "tr-ayt-a01",
+            "name": "Kaleiçi",
+            "rating": 4.8,
+            "address": "Kılınçarslan, 07100 Muratpaşa/Antalya, Türkiye",
+            "price": { "amount": 0, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr6/600/600", "https://picsum.photos/seed/attr6_2/600/600"]
+          },
+          {
+            "id": "tr-ayt-a02",
+            "name": "Düden Şelalesi",
+            "rating": 4.7,
+            "address": "Çağlayan, Lara Cd. No:457, 07230 Muratpaşa/Antalya, Türkiye",
+            "price": { "amount": 5, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr7/600/600", "https://picsum.photos/seed/attr7_2/600/600"]
+          },
+          {
+            "id": "tr-ayt-a03",
+            "name": "Aspendos Antik Tiyatrosu",
+            "rating": 4.9,
+            "address": "Sarıabalı, 07500 Serik/Antalya, Türkiye",
+            "price": { "amount": 15, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr8/600/600", "https://picsum.photos/seed/attr8_2/600/600"]
+          },
+          {
+            "id": "tr-ayt-a04",
+            "name": "Antalya Müzesi",
+            "rating": 4.8,
+            "address": "Bahçelievler, Konyaaltı Cd. No:88, 07050 Muratpaşa/Antalya, Türkiye",
+            "price": { "amount": 10, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr9/600/600", "https://picsum.photos/seed/attr9_2/600/600"]
+          },
+          {
+            "id": "tr-ayt-a05",
+            "name": "Kurşunlu Şelalesi Tabiat Parkı",
+            "rating": 4.6,
+            "address": "Kurşunlu, 07119 Aksu/Antalya, Türkiye",
+            "price": { "amount": 5, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr10/600/600", "https://picsum.photos/seed/attr10_2/600/600"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "country": "Fransa",
+    "cities": [
+      {
+        "city_name": "Paris",
+        "attractions": [
+          {
+            "id": "fr-par-a01",
+            "name": "Eyfel Kulesi",
+            "rating": 4.7,
+            "address": "Champ de Mars, 5 Av. Anatole France, 75007 Paris, Fransa",
+            "price": { "amount": 28, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr11/600/600", "https://picsum.photos/seed/attr11_2/600/600"]
+          },
+          {
+            "id": "fr-par-a02",
+            "name": "Louvre Müzesi",
+            "rating": 4.8,
+            "address": "Rue de Rivoli, 75001 Paris, Fransa",
+            "price": { "amount": 22, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr12/600/600", "https://picsum.photos/seed/attr12_2/600/600"]
+          },
+          {
+            "id": "fr-par-a03",
+            "name": "Notre Dame Katedrali",
+            "rating": 4.8,
+            "address": "6 Parvis Notre-Dame - Pl. Jean-Paul II, 75004 Paris, Fransa",
+            "price": { "amount": 0, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr13/600/600", "https://picsum.photos/seed/attr13_2/600/600"]
+          },
+          {
+            "id": "fr-par-a04",
+            "name": "Arc de Triomphe",
+            "rating": 4.7,
+            "address": "Pl. Charles de Gaulle, 75008 Paris, Fransa",
+            "price": { "amount": 13, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr14/600/600", "https://picsum.photos/seed/attr14_2/600/600"]
+          },
+          {
+            "id": "fr-par-a05",
+            "name": "Sacré-Cœur Bazilikası",
+            "rating": 4.7,
+            "address": "35 Rue du Chevalier de la Barre, 75018 Paris, Fransa",
+            "price": { "amount": 0, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr15/600/600", "https://picsum.photos/seed/attr15_2/600/600"]
+          }
+        ]
+      },
+      {
+        "city_name": "Nice",
+        "attractions": [
+          {
+            "id": "fr-nce-a01",
+            "name": "Promenade des Anglais",
+            "rating": 4.8,
+            "address": "Promenade des Anglais, 06000 Nice, Fransa",
+            "price": { "amount": 0, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr16/600/600", "https://picsum.photos/seed/attr16_2/600/600"]
+          },
+          {
+            "id": "fr-nce-a02",
+            "name": "Colline du Château",
+            "rating": 4.8,
+            "address": "Montée Monfort, 06300 Nice, Fransa",
+            "price": { "amount": 0, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr17/600/600", "https://picsum.photos/seed/attr17_2/600/600"]
+          },
+          {
+            "id": "fr-nce-a03",
+            "name": "Marc Chagall Ulusal Müzesi",
+            "rating": 4.6,
+            "address": "36 Av. Dr Ménard, 06000 Nice, Fransa",
+            "price": { "amount": 10, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr18/600/600", "https://picsum.photos/seed/attr18_2/600/600"]
+          },
+          {
+            "id": "fr-nce-a04",
+            "name": "Vieux Nice (Eski Nice)",
+            "rating": 4.7,
+            "address": "Vieux Nice, 06300 Nice, Fransa",
+            "price": { "amount": 0, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr19/600/600", "https://picsum.photos/seed/attr19_2/600/600"]
+          },
+          {
+            "id": "fr-nce-a05",
+            "name": "Matisse Müzesi",
+            "rating": 4.4,
+            "address": "164 Av. des Arènes de Cimiez, 06100 Nice, Fransa",
+            "price": { "amount": 10, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr20/600/600", "https://picsum.photos/seed/attr20_2/600/600"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "country": "İtalya",
+    "cities": [
+      {
+        "city_name": "Roma",
+        "attractions": [
+          {
+            "id": "it-rom-a01",
+            "name": "Kolezyum",
+            "rating": 4.8,
+            "address": "Piazza del Colosseo, 1, 00184 Roma RM, İtalya",
+            "price": { "amount": 18, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr21/600/600", "https://picsum.photos/seed/attr21_2/600/600"]
+          },
+          {
+            "id": "it-rom-a02",
+            "name": "Trevi Çeşmesi",
+            "rating": 4.8,
+            "address": "Piazza di Trevi, 00187 Roma RM, İtalya",
+            "price": { "amount": 0, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr22/600/600", "https://picsum.photos/seed/attr22_2/600/600"]
+          },
+          {
+            "id": "it-rom-a03",
+            "name": "Pantheon",
+            "rating": 4.8,
+            "address": "Piazza della Rotonda, 00186 Roma RM, İtalya",
+            "price": { "amount": 5, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr23/600/600", "https://picsum.photos/seed/attr23_2/600/600"]
+          },
+          {
+            "id": "it-rom-a04",
+            "name": "Vatikan Müzeleri",
+            "rating": 4.7,
+            "address": "Viale Vaticano, 00165 Roma RM, İtalya",
+            "price": { "amount": 20, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr24/600/600", "https://picsum.photos/seed/attr24_2/600/600"]
+          },
+          {
+            "id": "it-rom-a05",
+            "name": "Roma Forumu",
+            "rating": 4.7,
+            "address": "Via della Salara Vecchia, 5/6, 00186 Roma RM, İtalya",
+            "price": { "amount": 18, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr25/600/600", "https://picsum.photos/seed/attr25_2/600/600"]
+          }
+        ]
+      },
+      {
+        "city_name": "Venedik",
+        "attractions": [
+          {
+            "id": "it-vce-a01",
+            "name": "San Marco Meydanı",
+            "rating": 4.8,
+            "address": "Piazza San Marco, 30124 Venezia VE, İtalya",
+            "price": { "amount": 0, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr26/600/600", "https://picsum.photos/seed/attr26_2/600/600"]
+          },
+          {
+            "id": "it-vce-a02",
+            "name": "Rialto Köprüsü",
+            "rating": 4.7,
+            "address": "Sestiere San Polo, 30125 Venezia VE, İtalya",
+            "price": { "amount": 0, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr27/600/600", "https://picsum.photos/seed/attr27_2/600/600"]
+          },
+          {
+            "id": "it-vce-a03",
+            "name": "Doge Sarayı (Palazzo Ducale)",
+            "rating": 4.8,
+            "address": "Piazza San Marco, 1, 30124 Venezia VE, İtalya",
+            "price": { "amount": 30, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr28/600/600", "https://picsum.photos/seed/attr28_2/600/600"]
+          },
+          {
+            "id": "it-vce-a04",
+            "name": "San Marco Bazilikası",
+            "rating": 4.7,
+            "address": "Piazza San Marco, 328, 30124 Venezia VE, İtalya",
+            "price": { "amount": 3, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr29/600/600", "https://picsum.photos/seed/attr29_2/600/600"]
+          },
+          {
+            "id": "it-vce-a05",
+            "name": "Büyük Kanal (Canal Grande)",
+            "rating": 4.9,
+            "address": "Canal Grande, Venezia VE, İtalya",
+            "price": { "amount": 0, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr30/600/600", "https://picsum.photos/seed/attr30_2/600/600"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "country": "Japonya",
+    "cities": [
+      {
+        "city_name": "Tokyo",
+        "attractions": [
+          {
+            "id": "jp-tyo-a01",
+            "name": "Senso-ji Tapınağı",
+            "rating": 4.7,
+            "address": "2 Chome-3-1 Asakusa, Taito City, Tokyo 111-0032, Japonya",
+            "price": { "amount": 0, "currency": "JPY", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr31/600/600", "https://picsum.photos/seed/attr31_2/600/600"]
+          },
+          {
+            "id": "jp-tyo-a02",
+            "name": "Tokyo Kulesi",
+            "rating": 4.6,
+            "address": "4 Chome-2-8 Shibakoen, Minato City, Tokyo 105-0011, Japonya",
+            "price": { "amount": 1200, "currency": "JPY", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr32/600/600", "https://picsum.photos/seed/attr32_2/600/600"]
+          },
+          {
+            "id": "jp-tyo-a03",
+            "name": "Meiji Tapınağı",
+            "rating": 4.7,
+            "address": "1-1 Yoyogikamizonocho, Shibuya City, Tokyo 151-8557, Japonya",
+            "price": { "amount": 0, "currency": "JPY", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr33/600/600", "https://picsum.photos/seed/attr33_2/600/600"]
+          },
+          {
+            "id": "jp-tyo-a04",
+            "name": "Shibuya Kavşağı",
+            "rating": 4.8,
+            "address": "Dogenzaka, Shibuya City, Tokyo 150-0043, Japonya",
+            "price": { "amount": 0, "currency": "JPY", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr34/600/600", "https://picsum.photos/seed/attr34_2/600/600"]
+          },
+          {
+            "id": "jp-tyo-a05",
+            "name": "Ueno Parkı",
+            "rating": 4.6,
+            "address": "Uenokoen, Taito City, Tokyo 110-0007, Japonya",
+            "price": { "amount": 0, "currency": "JPY", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr35/600/600", "https://picsum.photos/seed/attr35_2/600/600"]
+          }
+        ]
+      },
+      {
+        "city_name": "Kyoto",
+        "attractions": [
+          {
+            "id": "jp-ukyo-a01",
+            "name": "Fushimi Inari Tapınağı",
+            "rating": 4.9,
+            "address": "68 Fukakusa Yabunouchicho, Fushimi Ward, Kyoto, 612-0882, Japonya",
+            "price": { "amount": 0, "currency": "JPY", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr36/600/600", "https://picsum.photos/seed/attr36_2/600/600"]
+          },
+          {
+            "id": "jp-ukyo-a02",
+            "name": "Kinkaku-ji (Altın Tapınak)",
+            "rating": 4.8,
+            "address": "1 Kinkakujicho, Kita Ward, Kyoto, 603-8361, Japonya",
+            "price": { "amount": 500, "currency": "JPY", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr37/600/600", "https://picsum.photos/seed/attr37_2/600/600"]
+          },
+          {
+            "id": "jp-ukyo-a03",
+            "name": "Kiyomizu-dera",
+            "rating": 4.8,
+            "address": "1 Chome-294 Kiyomizu, Higashiyama Ward, Kyoto, 605-0862, Japonya",
+            "price": { "amount": 400, "currency": "JPY", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr38/600/600", "https://picsum.photos/seed/attr38_2/600/600"]
+          },
+          {
+            "id": "jp-ukyo-a04",
+            "name": "Arashiyama Bambu Ormanı",
+            "rating": 4.8,
+            "address": "Sagaogurayama Tabuchiyamacho, Ukyo Ward, Kyoto, 616-8394, Japonya",
+            "price": { "amount": 0, "currency": "JPY", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr39/600/600", "https://picsum.photos/seed/attr39_2/600/600"]
+          },
+          {
+            "id": "jp-ukyo-a05",
+            "name": "Nijo Kalesi",
+            "rating": 4.6,
+            "address": "541 Nijojocho, Nakagyo Ward, Kyoto, 604-8301, Japonya",
+            "price": { "amount": 1300, "currency": "JPY", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr40/600/600", "https://picsum.photos/seed/attr40_2/600/600"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "country": "İspanya",
+    "cities": [
+      {
+        "city_name": "Barselona",
+        "attractions": [
+          {
+            "id": "es-bcn-a01",
+            "name": "Sagrada Familia",
+            "rating": 4.9,
+            "address": "C/ de Mallorca, 401, 08013 Barcelona, İspanya",
+            "price": { "amount": 26, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr41/600/600", "https://picsum.photos/seed/attr41_2/600/600"]
+          },
+          {
+            "id": "es-bcn-a02",
+            "name": "Park Güell",
+            "rating": 4.7,
+            "address": "Gràcia, 08024 Barcelona, İspanya",
+            "price": { "amount": 10, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr42/600/600", "https://picsum.photos/seed/attr42_2/600/600"]
+          },
+          {
+            "id": "es-bcn-a03",
+            "name": "Casa Batlló",
+            "rating": 4.7,
+            "address": "Pg. de Gràcia, 43, 08007 Barcelona, İspanya",
+            "price": { "amount": 35, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr43/600/600", "https://picsum.photos/seed/attr43_2/600/600"]
+          },
+          {
+            "id": "es-bcn-a04",
+            "name": "La Rambla",
+            "rating": 4.5,
+            "address": "La Rambla, Ciutat Vella, 08002 Barcelona, İspanya",
+            "price": { "amount": 0, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr44/600/600", "https://picsum.photos/seed/attr44_2/600/600"]
+          },
+          {
+            "id": "es-bcn-a05",
+            "name": "Camp Nou Stadyumu",
+            "rating": 4.8,
+            "address": "C. d'Arístides Maillol, 12, 08028 Barcelona, İspanya",
+            "price": { "amount": 28, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr45/600/600", "https://picsum.photos/seed/attr45_2/600/600"]
+          }
+        ]
+      },
+      {
+        "city_name": "Madrid",
+        "attractions": [
+          {
+            "id": "es-mad-a01",
+            "name": "Prado Müzesi",
+            "rating": 4.8,
+            "address": "C. de Ruiz de Alarcón, 23, 28014 Madrid, İspanya",
+            "price": { "amount": 15, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr46/600/600", "https://picsum.photos/seed/attr46_2/600/600"]
+          },
+          {
+            "id": "es-mad-a02",
+            "name": "Madrid Kraliyet Sarayı (Palacio Real)",
+            "rating": 4.7,
+            "address": "C. de Bailén, s/n, 28071 Madrid, İspanya",
+            "price": { "amount": 12, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr47/600/600", "https://picsum.photos/seed/attr47_2/600/600"]
+          },
+          {
+            "id": "es-mad-a03",
+            "name": "El Retiro Parkı",
+            "rating": 4.8,
+            "address": "Plaza de la Independencia, 7, 28001 Madrid, İspanya",
+            "price": { "amount": 0, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr48/600/600", "https://picsum.photos/seed/attr48_2/600/600"]
+          },
+          {
+            "id": "es-mad-a04",
+            "name": "Plaza Mayor",
+            "rating": 4.6,
+            "address": "Pl. Mayor, 28012 Madrid, İspanya",
+            "price": { "amount": 0, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr49/600/600", "https://picsum.photos/seed/attr49_2/600/600"]
+          },
+          {
+            "id": "es-mad-a05",
+            "name": "Reina Sofía Müzesi",
+            "rating": 4.6,
+            "address": "C. de Sta. Isabel, 52, 28012 Madrid, İspanya",
+            "price": { "amount": 12, "currency": "EUR", "period": "per_ticket" },
+            "images": ["https://picsum.photos/seed/attr50/600/600", "https://picsum.photos/seed/attr50_2/600/600"]
+          }
+        ]
+      }
+    ]
+  }
+]
