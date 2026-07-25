@@ -12,6 +12,18 @@ http:
       middlewares:
         - default-headers
 
+    # Swagger UI ve onun spec'i (/docs, /api-json) her zaman güncel kalmalı;
+    # daha spesifik PathPrefix olduğu için Traefik bunu "gateway" router'ından
+    # önce eşleştirir.
+    gateway-docs:
+      rule: "Host(`wraithathon.gokhansal.com`) && (PathPrefix(`/docs`) || Path(`/api-json`))"
+      entryPoints:
+        - web
+      service: gateway
+      middlewares:
+        - default-headers
+        - no-cache
+
     gateway:
       rule: "Host(`wraithathon.gokhansal.com`)"
       entryPoints:

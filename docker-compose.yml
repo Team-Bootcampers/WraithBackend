@@ -70,6 +70,22 @@ services:
       - backbone
     restart: unless-stopped
 
+  ai-service:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile
+      args:
+        APP_NAME: ai-service
+    env_file: .env
+    healthcheck:
+      test: [ "CMD", "node", "-e", "require('net').connect(process.env.AI_GRPC_PORT||5002,'localhost').on('connect',()=>process.exit(0)).on('error',()=>process.exit(1))" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - backbone
+    restart: unless-stopped
+
   auth-service:
     build:
       context: .
@@ -101,6 +117,8 @@ services:
     depends_on:
       user-service:
         condition: service_started
+      ai-service:
+        condition: service_started
       # Gateway bootstrap'ta auth-service spec'ini fetch eder;
       # auth-service sağlıklı olmadan başlamaz.
       auth-service:
@@ -116,7 +134,9 @@ services:
 
   cloudflared:
     image: cloudflare/cloudflared:latest
-    command: tunnel --no-autoupdate run --token eyJhIjoiY2MyZmEwZmU1NjUxYjM1ZGU0MDMxYTQ1ZDI0ZDBhYWIiLCJ0IjoiOTViNzA3NDItODI1MC00ODhjLWFjMGQtOTM5YjIyMzU4ZTMyIiwicyI6IlpUaGpOamN6WmpBdFpUbGhPUzAwTXpobExUZzNZekl0T0RBMFpUaGhNakJtTWpReiJ9
+    # QUIC/UDP bazı Docker ağlarında bloklanıyor; edge bağlantısı QUIC ile sürekli
+    # başarısız olup (Error 1033) tünel hiç kurulamıyorsa http2'ye sabitlenir.
+    command: tunnel --no-autoupdate --protocol http2 run --token eyJhIjoiY2MyZmEwZmU1NjUxYjM1ZGU0MDMxYTQ1ZDI0ZDBhYWIiLCJ0IjoiOTViNzA3NDItODI1MC00ODhjLWFjMGQtOTM5YjIyMzU4ZTMyIiwicyI6IlpUaGpOamN6WmpBdFpUbGhPUzAwTXpobExUZzNZekl0T0RBMFpUaGhNakJtTWpReiJ9
     networks:
       - backbone
     restart: unless-stopped

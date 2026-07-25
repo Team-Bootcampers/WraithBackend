@@ -50,6 +50,7 @@ async function bootstrap() {
     .setDescription('Tüm mikroservislerin birleşik API dokümantasyonu')
     .setVersion('0.1.0')
     .addTag('users')
+    .addTag('ai')
     .addTag('auth')
     .addServer('https://wraithathon.gokhansal.com', 'API Gateway')
     .build();

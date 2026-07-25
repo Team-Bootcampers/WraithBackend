@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package ai;
+
+// gateway bu servisi gRPC client olarak çağırır (ai-service = gRPC server).
+// Stateless: veri tabanı yok, sadece Gemini'a prompt gönderip cevabı döner.
+service AiService {
+  rpc AnalyzeTravelPersonality (AnalyzeTravelPersonalityRequest) returns (AnalyzeTravelPersonalityResponse);
+  rpc GenerateTravelRoute (GenerateTravelRouteRequest) returns (GenerateTravelRouteResponse);
+}
+
+message AnalyzeTravelPersonalityRequest {
+  // JSON.stringify edilmiş onboarding cevapları.
+  string answers = 1;
+}
+
+message AnalyzeTravelPersonalityResponse {
+  // Gemini'nin ürettiği analiz paragrafı (düz metin).
+  string analysis = 1;
+}
+
+message GenerateTravelRouteRequest {
+  string country = 1;
+  string city = 2;
+  // JSON.stringify edilmiş kişilik/onboarding özellikleri.
+  string personality = 3;
+}
+
+message GenerateTravelRouteResponse {
+  // JSON.stringify edilmiş { gezilecek_yerler, restoranlar } sonucu.
+  string result = 1;
+}

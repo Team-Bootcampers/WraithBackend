@@ -12,3 +12,11 @@ http:
       rateLimit:
         average: 100
         burst: 50
+
+    # /docs (Swagger UI) dinamik olarak üretiliyor; .js/.css uzantısı yüzünden
+    # Cloudflare edge'de cache'lenmesin diye no-store zorlanır. Aksi halde yeni
+    # servis/endpoint eklendiğinde Swagger UI eski (cache'lenmiş) spec'i gösterir.
+    no-cache:
+      headers:
+        customResponseHeaders:
+          Cache-Control: "no-store, no-cache, must-revalidate"
