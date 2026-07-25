@@ -1,0 +1,127 @@
+[
+  {
+    "country": "Türkiye",
+    "cities": [
+      {
+        "city_name": "İstanbul",
+        "restaurants": [
+          { "id": "tr-ist-r01", "name": "Mikla", "rating": 4.8, "address": "Asmalı Mescit, The Marmara Pera, Meşrutiyet Cd. No:15, 34430 Beyoğlu/İstanbul, Türkiye", "price": { "amount": 150, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest1/600/600", "https://picsum.photos/seed/rest1_2/600/600"] },
+          { "id": "tr-ist-r02", "name": "Neolokal", "rating": 4.7, "address": "Arap Cami, MAHAL, Bankalar Cd. No:11, 34420 Beyoğlu/İstanbul, Türkiye", "price": { "amount": 120, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest2/600/600", "https://picsum.photos/seed/rest2_2/600/600"] },
+          { "id": "tr-ist-r03", "name": "Sunset Grill & Bar", "rating": 4.6, "address": "Kuruçeşme Mah. Yol Sok. No:2 Ulus Park, 34345 Beşiktaş/İstanbul, Türkiye", "price": { "amount": 140, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest3/600/600", "https://picsum.photos/seed/rest3_2/600/600"] },
+          { "id": "tr-ist-r04", "name": "Nusr-Et Steakhouse Etiler", "rating": 4.5, "address": "Etiler, Nispetiye Cd No:87, 34337 Beşiktaş/İstanbul, Türkiye", "price": { "amount": 180, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest4/600/600", "https://picsum.photos/seed/rest4_2/600/600"] },
+          { "id": "tr-ist-r05", "name": "Karaköy Lokantası", "rating": 4.6, "address": "Kemankeş Karamustafa Paşa, Kemankeş Cd. No:37, 34425 Beyoğlu/İstanbul, Türkiye", "price": { "amount": 70, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest5/600/600", "https://picsum.photos/seed/rest5_2/600/600"] }
+        ]
+      },
+      {
+        "city_name": "Antalya",
+        "restaurants": [
+          { "id": "tr-ayt-r01", "name": "7 Mehmet", "rating": 4.9, "address": "Meltem Mah. Dumlupınar Bulv. Atatürk Kültür Parkı İçi, 07030 Muratpaşa/Antalya, Türkiye", "price": { "amount": 60, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest6/600/600", "https://picsum.photos/seed/rest6_2/600/600"] },
+          { "id": "tr-ayt-r02", "name": "Seraser Fine Dining Restaurant", "rating": 4.7, "address": "Selçuk, Paşa Cami Sk. No:14, 07100 Muratpaşa/Antalya, Türkiye", "price": { "amount": 110, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest7/600/600", "https://picsum.photos/seed/rest7_2/600/600"] },
+          { "id": "tr-ayt-r03", "name": "Vanilla Lounge", "rating": 4.6, "address": "Barbaros, Hesapçı Sk. No:33, 07100 Muratpaşa/Antalya, Türkiye", "price": { "amount": 75, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest8/600/600", "https://picsum.photos/seed/rest8_2/600/600"] },
+          { "id": "tr-ayt-r04", "name": "Nemo Restaurant & Lounge", "rating": 4.5, "address": "Kadriye, The Land of Legends, 07525 Serik/Antalya, Türkiye", "price": { "amount": 130, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest9/600/600", "https://picsum.photos/seed/rest9_2/600/600"] },
+          { "id": "tr-ayt-r05", "name": "Arma Restaurant", "rating": 4.4, "address": "Selçuk, İskele Cd. No:75, 07100 Muratpaşa/Antalya, Türkiye", "price": { "amount": 80, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest10/600/600", "https://picsum.photos/seed/rest10_2/600/600"] }
+        ]
+      }
+    ]
+  },
+  {
+    "country": "Fransa",
+    "cities": [
+      {
+        "city_name": "Paris",
+        "restaurants": [
+          { "id": "fr-par-r01", "name": "Le Jules Verne", "rating": 4.7, "address": "Avenue Gustave Eiffel, 75007 Paris, Fransa", "price": { "amount": 250, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest11/600/600", "https://picsum.photos/seed/rest11_2/600/600"] },
+          { "id": "fr-par-r02", "name": "Guy Savoy", "rating": 4.9, "address": "Monnaie de Paris, 11 Quai de Conti, 75006 Paris, Fransa", "price": { "amount": 400, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest12/600/600", "https://picsum.photos/seed/rest12_2/600/600"] },
+          { "id": "fr-par-r03", "name": "L'Ambroisie", "rating": 4.8, "address": "9 Place des Vosges, 75004 Paris, Fransa", "price": { "amount": 350, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest13/600/600", "https://picsum.photos/seed/rest13_2/600/600"] },
+          { "id": "fr-par-r04", "name": "Septime", "rating": 4.7, "address": "80 Rue de Charonne, 75011 Paris, Fransa", "price": { "amount": 120, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest14/600/600", "https://picsum.photos/seed/rest14_2/600/600"] },
+          { "id": "fr-par-r05", "name": "Epicure", "rating": 4.9, "address": "112 Rue du Faubourg Saint-Honoré, 75008 Paris, Fransa", "price": { "amount": 380, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest15/600/600", "https://picsum.photos/seed/rest15_2/600/600"] }
+        ]
+      },
+      {
+        "city_name": "Nice",
+        "restaurants": [
+          { "id": "fr-nce-r01", "name": "Le Chantecler", "rating": 4.7, "address": "37 Prom. des Anglais, 06000 Nice, Fransa", "price": { "amount": 180, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest16/600/600", "https://picsum.photos/seed/rest16_2/600/600"] },
+          { "id": "fr-nce-r02", "name": "JAN", "rating": 4.8, "address": "12 Rue Lascaris, 06300 Nice, Fransa", "price": { "amount": 150, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest17/600/600", "https://picsum.photos/seed/rest17_2/600/600"] },
+          { "id": "fr-nce-r03", "name": "La Merenda", "rating": 4.6, "address": "4 Rue Raoul Bosio, 06300 Nice, Fransa", "price": { "amount": 60, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest18/600/600", "https://picsum.photos/seed/rest18_2/600/600"] },
+          { "id": "fr-nce-r04", "name": "L'Aromate", "rating": 4.5, "address": "2 Rue Gustave Deloye, 06000 Nice, Fransa", "price": { "amount": 90, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest19/600/600", "https://picsum.photos/seed/rest19_2/600/600"] },
+          { "id": "fr-nce-r05", "name": "Keisuke Matsushima", "rating": 4.6, "address": "22 Ter Rue de France, 06000 Nice, Fransa", "price": { "amount": 110, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest20/600/600", "https://picsum.photos/seed/rest20_2/600/600"] }
+        ]
+      }
+    ]
+  },
+  {
+    "country": "İtalya",
+    "cities": [
+      {
+        "city_name": "Roma",
+        "restaurants": [
+          { "id": "it-rom-r01", "name": "La Pergola", "rating": 4.9, "address": "Via Alberto Cadlolo, 101, 00136 Roma RM, İtalya", "price": { "amount": 300, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest21/600/600", "https://picsum.photos/seed/rest21_2/600/600"] },
+          { "id": "it-rom-r02", "name": "Il Pagliaccio", "rating": 4.8, "address": "Via dei Banchi Vecchi, 129/a, 00186 Roma RM, İtalya", "price": { "amount": 200, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest22/600/600", "https://picsum.photos/seed/rest22_2/600/600"] },
+          { "id": "it-rom-r03", "name": "Roscioli Salumeria con Cucina", "rating": 4.6, "address": "Via dei Giubbonari, 21/22, 00186 Roma RM, İtalya", "price": { "amount": 80, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest23/600/600", "https://picsum.photos/seed/rest23_2/600/600"] },
+          { "id": "it-rom-r04", "name": "Armando al Pantheon", "rating": 4.7, "address": "Salita de' Crescenzi, 31, 00186 Roma RM, İtalya", "price": { "amount": 65, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest24/600/600", "https://picsum.photos/seed/rest24_2/600/600"] },
+          { "id": "it-rom-r05", "name": "Da Enzo al 29", "rating": 4.5, "address": "Via dei Vascellari, 29, 00153 Roma RM, İtalya", "price": { "amount": 40, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest25/600/600", "https://picsum.photos/seed/rest25_2/600/600"] }
+        ]
+      },
+      {
+        "city_name": "Venedik",
+        "restaurants": [
+          { "id": "it-vce-r01", "name": "Ristorante Quadri", "rating": 4.7, "address": "Piazza San Marco, 121, 30124 Venezia VE, İtalya", "price": { "amount": 250, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest26/600/600", "https://picsum.photos/seed/rest26_2/600/600"] },
+          { "id": "it-vce-r02", "name": "Club del Doge", "rating": 4.8, "address": "Campo Santa Maria del Giglio, 2467, 30124 Venezia VE, İtalya", "price": { "amount": 180, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest27/600/600", "https://picsum.photos/seed/rest27_2/600/600"] },
+          { "id": "it-vce-r03", "name": "Osteria alle Testiere", "rating": 4.7, "address": "Calle del Mondo Novo, 5801, 30122 Venezia VE, İtalya", "price": { "amount": 90, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest28/600/600", "https://picsum.photos/seed/rest28_2/600/600"] },
+          { "id": "it-vce-r04", "name": "Antiche Carampane", "rating": 4.6, "address": "Rio Terà de le Carampane, 1911, 30125 Venezia VE, İtalya", "price": { "amount": 85, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest29/600/600", "https://picsum.photos/seed/rest29_2/600/600"] },
+          { "id": "it-vce-r05", "name": "Riviera", "rating": 4.6, "address": "Fondamenta Zattere Al Ponte Lungo, 1473, 30123 Venezia VE, İtalya", "price": { "amount": 120, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest30/600/600", "https://picsum.photos/seed/rest30_2/600/600"] }
+        ]
+      }
+    ]
+  },
+  {
+    "country": "Japonya",
+    "cities": [
+      {
+        "city_name": "Tokyo",
+        "restaurants": [
+          { "id": "jp-tyo-r01", "name": "Sukiyabashi Jiro", "rating": 4.8, "address": "4 Chome-2-15 Ginza, Chuo City, Tokyo 104-0061, Japonya", "price": { "amount": 350, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest31/600/600", "https://picsum.photos/seed/rest31_2/600/600"] },
+          { "id": "jp-tyo-r02", "name": "Narisawa", "rating": 4.8, "address": "2 Chome-6-15 Minamiaoyama, Minato City, Tokyo 107-0062, Japonya", "price": { "amount": 280, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest32/600/600", "https://picsum.photos/seed/rest32_2/600/600"] },
+          { "id": "jp-tyo-r03", "name": "RyuGin", "rating": 4.9, "address": "Midtown Hibiya, 1 Chome-1-2 Yurakucho, Chiyoda City, Tokyo 100-0006, Japonya", "price": { "amount": 400, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest33/600/600", "https://picsum.photos/seed/rest33_2/600/600"] },
+          { "id": "jp-tyo-r04", "name": "Sushi Saito", "rating": 4.9, "address": "1 Chome-4-5 Roppongi, Minato City, Tokyo 106-0032, Japonya", "price": { "amount": 300, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest34/600/600", "https://picsum.photos/seed/rest34_2/600/600"] },
+          { "id": "jp-tyo-r05", "name": "L'Effervescence", "rating": 4.7, "address": "2 Chome-26-4 Nishiazabu, Minato City, Tokyo 106-0031, Japonya", "price": { "amount": 250, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest35/600/600", "https://picsum.photos/seed/rest35_2/600/600"] }
+        ]
+      },
+      {
+        "city_name": "Kyoto",
+        "restaurants": [
+          { "id": "jp-ukyo-r01", "name": "Kikunoi Honten", "rating": 4.9, "address": "459 Shimokawaracho, Higashiyama Ward, Kyoto, 605-0825, Japonya", "price": { "amount": 280, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest36/600/600", "https://picsum.photos/seed/rest36_2/600/600"] },
+          { "id": "jp-ukyo-r02", "name": "Kitcho Arashiyama", "rating": 4.9, "address": "58 Susukinobaba-cho, Saga Tenryuji, Ukyo-ku, Kyoto, 616-8385, Japonya", "price": { "amount": 450, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest37/600/600", "https://picsum.photos/seed/rest37_2/600/600"] },
+          { "id": "jp-ukyo-r03", "name": "Hyotei", "rating": 4.8, "address": "35 Nanzenji Kusakawacho, Sakyo Ward, Kyoto, 606-8437, Japonya", "price": { "amount": 320, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest38/600/600", "https://picsum.photos/seed/rest38_2/600/600"] },
+          { "id": "jp-ukyo-r04", "name": "Gion Sasaki", "rating": 4.8, "address": "566-27 Komatsucho, Higashiyama Ward, Kyoto, 605-0811, Japonya", "price": { "amount": 250, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest39/600/600", "https://picsum.photos/seed/rest39_2/600/600"] },
+          { "id": "jp-ukyo-r05", "name": "Monk", "rating": 4.7, "address": "147 Jodoji Shimominamidacho, Sakyo Ward, Kyoto, 606-8404, Japonya", "price": { "amount": 120, "currency": "USD", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest40/600/600", "https://picsum.photos/seed/rest40_2/600/600"] }
+        ]
+      }
+    ]
+  },
+  {
+    "country": "İspanya",
+    "cities": [
+      {
+        "city_name": "Barselona",
+        "restaurants": [
+          { "id": "es-bcn-r01", "name": "Disfrutar", "rating": 4.9, "address": "C. de Villarroel, 163, 08036 Barcelona, İspanya", "price": { "amount": 220, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest41/600/600", "https://picsum.photos/seed/rest41_2/600/600"] },
+          { "id": "es-bcn-r02", "name": "Lasarte", "rating": 4.8, "address": "C/ de Mallorca, 259, 08008 Barcelona, İspanya", "price": { "amount": 280, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest42/600/600", "https://picsum.photos/seed/rest42_2/600/600"] },
+          { "id": "es-bcn-r03", "name": "ABaC", "rating": 4.8, "address": "Av. del Tibidabo, 1, 08022 Barcelona, İspanya", "price": { "amount": 250, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest43/600/600", "https://picsum.photos/seed/rest43_2/600/600"] },
+          { "id": "es-bcn-r04", "name": "Enigma", "rating": 4.7, "address": "C/ de Sepúlveda, 38-40, 08015 Barcelona, İspanya", "price": { "amount": 200, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest44/600/600", "https://picsum.photos/seed/rest44_2/600/600"] },
+          { "id": "es-bcn-r05", "name": "Can Culleretes", "rating": 4.4, "address": "Carrer d'en Quintana, 5, 08002 Barcelona, İspanya", "price": { "amount": 40, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest45/600/600", "https://picsum.photos/seed/rest45_2/600/600"] }
+        ]
+      },
+      {
+        "city_name": "Madrid",
+        "restaurants": [
+          { "id": "es-mad-r01", "name": "DiverXO", "rating": 4.9, "address": "NH Collection Madrid Eurobuilding, C. del Padre Damián, 23, 28036 Madrid, İspanya", "price": { "amount": 360, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest46/600/600", "https://picsum.photos/seed/rest46_2/600/600"] },
+          { "id": "es-mad-r02", "name": "Sobrino de Botín", "rating": 4.6, "address": "C. de los Cuchilleros, 17, 28005 Madrid, İspanya", "price": { "amount": 60, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest47/600/600", "https://picsum.photos/seed/rest47_2/600/600"] },
+          { "id": "es-mad-r03", "name": "Coque", "rating": 4.8, "address": "C. del Marqués del Riscal, 11, 28010 Madrid, İspanya", "price": { "amount": 220, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest48/600/600", "https://picsum.photos/seed/rest48_2/600/600"] },
+          { "id": "es-mad-r04", "name": "Paco Roncero Restaurante", "rating": 4.7, "address": "C. de Alcalá, 15, 28014 Madrid, İspanya", "price": { "amount": 190, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest49/600/600", "https://picsum.photos/seed/rest49_2/600/600"] },
+          { "id": "es-mad-r05", "name": "Ramón Freixa Madrid", "rating": 4.8, "address": "Hotel Único, C. de Claudio Coello, 67, 28001 Madrid, İspanya", "price": { "amount": 180, "currency": "EUR", "period": "per_person" }, "images": ["https://picsum.photos/seed/rest50/600/600", "https://picsum.photos/seed/rest50_2/600/600"] }
+        ]
+      }
+    ]
+  }
+]

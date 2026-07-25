@@ -1,15 +1,22 @@
-import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
-import { AxiosError } from 'axios';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { GeminiClientService } from '../gemini/gemini-client.service';
+import { RESTAURANT_RECOMMENDATION_RESPONSE_SCHEMA } from './restaurant-recommendation.schema';
 
-interface GeminiGenerateContentResponse {
-  candidates?: {
-    content?: {
-      parts?: { text?: string }[];
-    };
-  }[];
+export interface RestaurantPrice {
+  amount: number;
+  currency: string;
+  period: string;
+}
+
+export interface RestaurantCandidate {
+  id: string;
+  name: string;
+  rating: number;
+  address: string;
+  price: RestaurantPrice;
+  images: string[];
+  country: string;
+  cityName: string;
 }
 
 export interface TravelRoutePlace {
@@ -33,24 +40,28 @@ export interface TravelRouteResult {
 
 @Injectable()
 export class AiService {
-  private readonly logger = new Logger(AiService.name);
-
-  constructor(
-    private readonly httpService: HttpService,
-    private readonly configService: ConfigService,
-  ) {}
+  constructor(private readonly geminiClient: GeminiClientService) {}
 
   async analyzeTravelPersonality(answers: Record<string, unknown>): Promise<string> {
     const prompt = [
       'Aşağıdaki JSON verisinde bir kullanıcının seyahat tercihleri yer almaktadır.',
       'Bu verilere dayanarak kullanıcının seyahat kişiliğini analiz et.',
       'Enerjik ve doğrudan kullanıcıya hitap eden bir dil kullan.',
-      'Yanıtın kesinlikle 250 karakteri geçmesin!',
+      'Yanıtın kesinlikle 350 karakteri geçmesin!',
       `Veri: ${JSON.stringify(answers)}`,
     ].join(' ');
 
-    const text = await this.callGemini(prompt);
-    return text.trim();
+    const text = await this.geminiClient.generateContent(prompt);
+    return this.sanitizeAnalysis(text);
+  }
+
+  // Gemini çıktısında bazen markdown (yıldız, çift tırnak vb.) karakterler geliyor;
+  // sadece harfler, boşluk ve cümle sonu noktalama işaretleri (. , !) kalacak şekilde temizlenir.
+  private sanitizeAnalysis(text: string): string {
+    return text
+      .replace(/[^\p{L}\s.,!]/gu, '')
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 
   async generateTravelRoute(
@@ -86,7 +97,7 @@ export class AiService {
       ),
     ].join('\n');
 
-    const text = await this.callGemini(prompt, { responseMimeType: 'application/json' });
+    const text = await this.geminiClient.generateContent(prompt, { responseMimeType: 'application/json' });
 
     try {
       return JSON.parse(text) as TravelRouteResult;
@@ -95,30 +106,40 @@ export class AiService {
     }
   }
 
-  private async callGemini(prompt: string, generationConfig?: Record<string, unknown>): Promise<string> {
-    const model = this.configService.get<string>('GEMINI_MODEL') ?? 'gemini-flash-latest';
-    const apiKey = this.configService.get<string>('GEMINI_API_KEY');
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+  async recommendRestaurants(
+    country: string,
+    city: string,
+    personalityAnalysis: string,
+    restaurants: RestaurantCandidate[],
+  ): Promise<RestaurantCandidate[]> {
+    const prompt = [
+      'Sen uzman bir seyahat asistanısın. Amacın, verilen aday restoran listesi içinden kullanıcının',
+      'seyahat kişiliği analizine en uygun olanları seçmektir.',
+      '',
+      'GİRDİLER:',
+      `Ülke: ${country}`,
+      `Şehir: ${city}`,
+      `Kullanıcının Kişilik Analizi: ${personalityAnalysis}`,
+      `Aday Restoran Listesi (JSON): ${JSON.stringify(restaurants)}`,
+      '',
+      'KURALLAR:',
+      '1. Sadece yukarıdaki aday listede bulunan restoranlar arasından seçim yap; yeni restoran uydurma.',
+      '2. Seçtiğin her restoranın id, name, rating, address, price, images, country, cityName alanlarını',
+      '   aday listedeki değerleriyle BİREBİR aynı şekilde döndür; hiçbir alanı değiştirme.',
+      '3. Restoranları, kullanıcının kişiliğine en uygun olandan en az uygun olana doğru sırala.',
+      '4. Aday listede uygun restoran yoksa boş dizi döndür.',
+      '5. Sadece response şemasına uyan JSON döndür; markdown kod bloğu, açıklama veya selamlama ekleme.',
+    ].join('\n');
+
+    const text = await this.geminiClient.generateContent(prompt, {
+      responseMimeType: 'application/json',
+      responseSchema: RESTAURANT_RECOMMENDATION_RESPONSE_SCHEMA,
+    });
 
     try {
-      const response = await firstValueFrom(
-        this.httpService.post<GeminiGenerateContentResponse>(
-          url,
-          { contents: [{ parts: [{ text: prompt }] }], ...(generationConfig ? { generationConfig } : {}) },
-          { headers: { 'x-goog-api-key': apiKey, 'Content-Type': 'application/json' } },
-        ),
-      );
-
-      const text = response.data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (!text) {
-        throw new InternalServerErrorException('Gemini boş yanıt döndü');
-      }
-      return text.trim();
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        this.logger.error(`Gemini isteği başarısız: ${error.response?.status} ${JSON.stringify(error.response?.data)}`);
-      }
-      throw new InternalServerErrorException('Gemini isteği başarısız oldu');
+      return JSON.parse(text) as RestaurantCandidate[];
+    } catch {
+      throw new InternalServerErrorException('Gemini geçerli bir restoran önerisi JSON\'u döndürmedi');
     }
   }
 }

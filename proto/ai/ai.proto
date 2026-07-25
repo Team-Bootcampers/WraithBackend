@@ -7,6 +7,7 @@ package ai;
 service AiService {
   rpc AnalyzeTravelPersonality (AnalyzeTravelPersonalityRequest) returns (AnalyzeTravelPersonalityResponse);
   rpc GenerateTravelRoute (GenerateTravelRouteRequest) returns (GenerateTravelRouteResponse);
+  rpc RecommendRestaurants (RecommendRestaurantsRequest) returns (RecommendRestaurantsResponse);
 }
 
 message AnalyzeTravelPersonalityRequest {
@@ -28,5 +29,39 @@ message GenerateTravelRouteRequest {
 
 message GenerateTravelRouteResponse {
   // JSON.stringify edilmiş { gezilecek_yerler, restoranlar } sonucu.
+  string result = 1;
+}
+
+message RecommendRestaurantsRequest {
+  string country = 1;
+  string city = 2;
+  // Kullanıcının seyahat kişiliği analiz metni.
+  string personalityAnalysis = 3;
+  // JSON.stringify edilmiş aday restoran listesi (restaurant-service'ten gelen RestaurantResponse[]).
+  string restaurants = 4;
+}
+
+message RecommendRestaurantsResponse {
+  // JSON.stringify edilmiş, kişiliğe uygun seçilmiş restoran listesi (RestaurantResponse[] ile aynı şema).
+  string result = 1;
+}
+
+// Onboarding'de üretilen karakter analizine ve kullanıcının seçtiği durak/otel/mekan/restoran
+// verilerine dayanarak gün gün, saat saat seyahat planı üretir.
+service TripPlanningService {
+  rpc PlanTrip (PlanTripRequest) returns (PlanTripResponse);
+}
+
+message PlanTripRequest {
+  // Onboarding'de Gemini'nin ürettiği seyahat kişiliği analiz metni.
+  string characterAnalysis = 1;
+  // JSON.stringify edilmiş onboarding cevapları (OnboardingAnswersDto).
+  string onboardingAnswers = 2;
+  // JSON.stringify edilmiş seyahat verisi (TripDto: travelerCount + stops[]).
+  string trip = 3;
+}
+
+message PlanTripResponse {
+  // JSON.stringify edilmiş TripPlanDto sonucu.
   string result = 1;
 }
