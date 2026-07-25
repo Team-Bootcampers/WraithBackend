@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
-import { AiService, RestaurantCandidate } from './ai.service';
+import { AiService, AttractionCandidate, RestaurantCandidate } from './ai.service';
 
 interface AnalyzeTravelPersonalityRequest {
   answers: string;
@@ -18,6 +18,13 @@ interface RecommendRestaurantsRequest {
   city: string;
   personalityAnalysis: string;
   restaurants: string;
+}
+
+interface RecommendAttractionsRequest {
+  country: string;
+  city: string;
+  personalityAnalysis: string;
+  attractions: string;
 }
 
 @Controller()
@@ -55,6 +62,22 @@ export class AiController {
         data.city,
         data.personalityAnalysis,
         restaurants,
+      );
+      return { result: JSON.stringify(recommended) };
+    } catch (error) {
+      throw new RpcException({ code: status.INTERNAL, message: (error as Error).message });
+    }
+  }
+
+  @GrpcMethod('AiService', 'RecommendAttractions')
+  async recommendAttractions(data: RecommendAttractionsRequest) {
+    try {
+      const attractions = JSON.parse(data.attractions) as AttractionCandidate[];
+      const recommended = await this.aiService.recommendAttractions(
+        data.country,
+        data.city,
+        data.personalityAnalysis,
+        attractions,
       );
       return { result: JSON.stringify(recommended) };
     } catch (error) {

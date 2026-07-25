@@ -57,6 +57,16 @@
         "assets": ["data/**/*.json"]
       }
     },
+    "attraction-service": {
+      "type": "application",
+      "root": "apps/attraction-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/attraction-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/attraction-service/tsconfig.app.json",
+        "assets": ["data/**/*.json"]
+      }
+    },
     "gateway": {
       "type": "application",
       "root": "apps/gateway",
