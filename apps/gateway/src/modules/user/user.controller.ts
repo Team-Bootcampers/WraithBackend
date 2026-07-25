@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Put } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SaveOnboardingDto } from './dto/save-onboarding.dto';
+import { OnboardingAnswersDto, SaveOnboardingDto } from './dto/save-onboarding.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponseDto } from './dto/user-response.dto';
 import { UserService } from './user.service';
@@ -53,8 +53,8 @@ export class UserController {
   @Get(':id/onboarding')
   @ApiOperation({ summary: 'Kullanıcının kayıtlı onboarding cevaplarını döner' })
   @ApiParam({ name: 'id' })
-  @ApiResponse({ status: 200, description: 'Onboarding cevapları (yoksa null)' })
-  getOnboarding(@Param('id') id: string): Promise<Record<string, unknown> | null> {
+  @ApiResponse({ status: 200, type: OnboardingAnswersDto, description: 'Onboarding cevapları (yoksa null)' })
+  getOnboarding(@Param('id') id: string): Promise<OnboardingAnswersDto | null> {
     return this.userService.getOnboardingAnswers(id);
   }
 }
