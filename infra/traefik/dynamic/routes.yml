@@ -8,11 +8,28 @@ http:
       middlewares:
         - default-headers
 
+    gateway:
+      rule: "Host(`api.localhost`)"
+      entryPoints:
+        - web
+      service: gateway
+      middlewares:
+        - default-headers
+
   services:
     auth-service:
       loadBalancer:
         servers:
           - url: "http://auth-service:3001"
+        healthCheck:
+          path: /health
+          interval: "5s"
+          timeout: "3s"
+
+    gateway:
+      loadBalancer:
+        servers:
+          - url: "http://gateway:3000"
         healthCheck:
           path: /health
           interval: "5s"

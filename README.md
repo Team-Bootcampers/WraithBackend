@@ -6,7 +6,7 @@ NestJS tabanlı, Traefik gateway, Firebase Auth, gRPC/NATS ve PostgreSQL & Mongo
 
 ```
 apps/                       Nest CLI monorepo altındaki her bir çalıştırılabilir servis
-  gateway/                  (henüz yazılmadı) Traefik arkasındaki tek giriş noktası
+  gateway/                  ✅ Traefik arkasındaki tek giriş noktası, user-service'i REST+Swagger olarak dışa açar
   auth-service/             ✅ Firebase Auth (signup/login) + kendi Postgres DB'si (login audit)
   user-service/             ✅ Kullanıcı profilleri, gRPC server, kendi Postgres DB'si
   catalog-service/          (henüz yazılmadı) Örnek domain servisi (MongoDB)
@@ -40,6 +40,14 @@ scripts/
   - `CreateUser`, `GetUserByFirebaseUid`, `GetUserById`, `ListUsers`, `UpdateUser`, `DeleteUser` (soft delete) — TypeORM ile `users` tablosuna yazar/okur.
   - `DeleteUser` kaydı silmez, `isActive` alanını `false` yapar (soft delete). `GetUserById`/`ListUsers` sadece `isActive: true` kullanıcıları döner.
   - DB: `user-postgres` (tablo: `users`)
+
+- **gateway** (`apps/gateway`, HTTP `:3000`, Traefik: `http://api.localhost`)
+  - `user-service`'in gRPC uçlarını REST+Swagger olarak dışa açar (dışarıdan gRPC'ye doğrudan erişim yok):
+    - `GET /users` — aktif kullanıcıları listeler
+    - `GET /users/:id` — kullanıcıyı id ile bulur (soft-deleted ise `404`)
+    - `PATCH /users/:id` — `displayName` günceller
+    - `DELETE /users/:id` — soft delete (`isActive = false`), `204` döner
+  - Swagger: `http://api.localhost/docs`
 
 ### Neden Firebase hem Admin SDK hem REST API?
 Firebase Admin SDK parola doğrulayamaz (sadece kullanıcı yönetimi yapar); email/parola ile giriş backend üzerinden yapılacaksa Identity Toolkit REST API'sinin (`FIREBASE_API_KEY`) kullanılması gerekir. Bu proje bu deseni izliyor: **signup → Admin SDK**, **login → REST API**.
