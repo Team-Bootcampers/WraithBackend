@@ -30,10 +30,10 @@ scripts/
 
 İki ayrı servis, aralarında **gRPC** ile konuşur, her birinin **kendi Postgres veritabanı** vardır:
 
-- **auth-service** (`apps/auth-service`, HTTP `:3001`, Traefik: `http://auth.localhost`)
+- **auth-service** (`apps/auth-service`, HTTP `:3001`, Traefik: `http://api.localhost/auth/**`)
   - `POST /auth/signup` — Firebase Admin SDK ile kullanıcı oluşturur, ardından gRPC ile `user-service`'te profil kaydı açar. `user-service` başarısız olursa Firebase'de sahipsiz hesap kalmasın diye **rollback** yapılır (`deleteUser`).
   - `POST /auth/login` — Firebase Identity Toolkit REST API (`signInWithPassword`) ile giriş yapar, `idToken`/`refreshToken` döner. Her deneme kendi DB'sindeki `login_audit` tablosuna yazılır. `user-service` o an ayakta değilse login **başarısız sayılmaz** (kimlik doğrulama zaten Firebase'de tamamlanmıştır) — sadece profil bilgisi `user: null` döner.
-  - Swagger: `http://auth.localhost/docs`
+  - Swagger: `http://api.localhost/docs`
   - DB: `auth-postgres` (tablo: `login_audit`)
 
 - **user-service** (`apps/user-service`, sadece gRPC `:5001`, dışa açık değil)
@@ -79,7 +79,32 @@ docker compose up --build
 
 Bu değerler girilmeden de `docker compose up` sorunsuz çalışır ve Swagger açılır; sadece `/auth/signup` ve `/auth/login` istekleri `503`/`401` döner (servis çökmez).
 
+## Routing Kuralı (Bağlayıcı Mimari Kural)
+
+Bu projede tüm HTTP servisleri dış dünyaya **yalnızca tek bir domain** üzerinden açılır:
+
+| Domain | Kural |
+|---|---|
+| `api.localhost` | Tüm servisler için tek giriş noktası |
+| `*.localhost` (alt domain) | **KULLANILMAZ** — yeni servis eklerse mevcut pattern izlenir |
+
+**Yeni bir HTTP servisi eklerken şu adımlar izlenir:**
+1. `infra/traefik/dynamic/routes.yml` dosyasına yeni bir `router` + `service` bloğu eklenir.
+   - `rule: "Host('api.localhost') && PathPrefix('/yeni-servis-prefix')"`
+2. Servisin `main.ts` dosyasında Swagger `DocumentBuilder`'a `.addServer('http://api.localhost', 'API Gateway (dev)')` eklenir.
+3. NestJS controller'da `@Controller('yeni-servis-prefix')` prefix'i Traefik'teki PathPrefix ile eşleştirilir.
+4. Swagger: Her servisin `/docs` path'i Traefik üzerinden `api.localhost/docs` adresine yönlendirilir (gateway üzerinden konsolide edilir).
+
+**Mevcut prefix'ler:**
+
+| Prefix | Servis |
+|---|---|
+| `/auth` | auth-service (HTTP :3001) |
+| `/users` | gateway → user-service (gRPC :5001) |
+
+---
+
 ## Notlar
 - `apps/` yapısı Nest CLI monorepo modunu (`nest-cli.json` içinde `projects`) hedefler.
 - `synchronize: true` (TypeORM) sadece dev kolaylığı için; production'a geçerken migration'lara taşınmalı.
-- `gateway`, `catalog-service`, `notification-service`, `libs/` klasörleri sonraki fazlar için ayrılmış scaffold — henüz derlenebilir kod içermiyor.
+- `catalog-service`, `notification-service`, `libs/` klasörleri sonraki fazlar için ayrılmış scaffold — henüz derlenebilir kod içermiyor.

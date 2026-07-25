@@ -1,7 +1,11 @@
 http:
   routers:
+    # auth-service: api.localhost/auth/** → auth-service:3001
+    # Kural: Tüm HTTP servisler api.localhost altında PathPrefix ile yönlendirilir.
+    # Yeni servis eklerken bu dosyaya yeni bir router + service bloğu eklenir,
+    # farklı subdomain (*.localhost) KULLANILMAZ.
     auth-service:
-      rule: "Host(`auth.localhost`)"
+      rule: "Host(`api.localhost`) && PathPrefix(`/auth`)"
       entryPoints:
         - web
       service: auth-service
