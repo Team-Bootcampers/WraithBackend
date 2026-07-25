@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { HttpModule } from '@nestjs/axios';
+import { GeminiModule } from '../gemini/gemini.module';
 import { AiController } from './ai.controller';
 import { AiService } from './ai.service';
 
 @Module({
-  imports: [HttpModule],
+  imports: [GeminiModule],
   controllers: [AiController],
   providers: [AiService],
 })
