@@ -1,0 +1,18 @@
+api:
+  dashboard: true
+  insecure: true # dev only — dashboard için auth yok, production'da kapatılmalı veya middleware ile korunmalı
+
+entryPoints:
+  web:
+    address: ":80"
+
+providers:
+  # Docker provider (label tabanlı auto-discovery) yerine dosya tabanlı routing kullanılıyor:
+  # docker.sock erişiminin kısıtlı/proxy'li olduğu ortamlarda (ör. bazı sandbox/CI kurulumları)
+  # daha taşınabilir. Yeni bir servis eklerken infra/traefik/dynamic/routes.yml'e route eklenir.
+  file:
+    directory: /etc/traefik/dynamic
+    watch: true
+
+log:
+  level: INFO

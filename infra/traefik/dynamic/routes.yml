@@ -1,0 +1,19 @@
+http:
+  routers:
+    auth-service:
+      rule: "Host(`auth.localhost`)"
+      entryPoints:
+        - web
+      service: auth-service
+      middlewares:
+        - default-headers
+
+  services:
+    auth-service:
+      loadBalancer:
+        servers:
+          - url: "http://auth-service:3001"
+        healthCheck:
+          path: /health
+          interval: "5s"
+          timeout: "3s"

@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package user;
+
+// auth-service bu servisi gRPC client olarak çağırır (user-service = gRPC server).
+service UserService {
+  rpc CreateUser (CreateUserRequest) returns (UserResponse);
+  rpc GetUserByFirebaseUid (GetUserByFirebaseUidRequest) returns (UserResponse);
+}
+
+message CreateUserRequest {
+  string firebaseUid = 1;
+  string email = 2;
+  string displayName = 3;
+}
+
+message GetUserByFirebaseUidRequest {
+  string firebaseUid = 1;
+}
+
+message UserResponse {
+  string id = 1;
+  string firebaseUid = 2;
+  string email = 3;
+  string displayName = 4;
+  string createdAt = 5;
+}
