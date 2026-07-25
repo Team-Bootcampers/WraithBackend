@@ -9,6 +9,10 @@ export interface CreateUserParams {
   displayName?: string;
 }
 
+export interface UpdateUserParams {
+  displayName: string;
+}
+
 @Injectable()
 export class UserService {
   constructor(
@@ -32,5 +36,29 @@ export class UserService {
       throw new NotFoundException(`User with firebaseUid ${firebaseUid} not found`);
     }
     return user;
+  }
+
+  async listUsers(): Promise<UserEntity[]> {
+    return this.userRepository.find({ where: { isActive: true }, order: { createdAt: 'DESC' } });
+  }
+
+  async getUserById(id: string): Promise<UserEntity> {
+    const user = await this.userRepository.findOne({ where: { id, isActive: true } });
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+    return user;
+  }
+
+  async updateUser(id: string, params: UpdateUserParams): Promise<UserEntity> {
+    const user = await this.getUserById(id);
+    user.displayName = params.displayName;
+    return this.userRepository.save(user);
+  }
+
+  async softDeleteUser(id: string): Promise<void> {
+    const user = await this.getUserById(id);
+    user.isActive = false;
+    await this.userRepository.save(user);
   }
 }

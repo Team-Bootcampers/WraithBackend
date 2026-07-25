@@ -37,7 +37,8 @@ scripts/
   - DB: `auth-postgres` (tablo: `login_audit`)
 
 - **user-service** (`apps/user-service`, sadece gRPC `:5001`, dışa açık değil)
-  - `CreateUser`, `GetUserByFirebaseUid` — TypeORM ile `users` tablosuna yazar/okur.
+  - `CreateUser`, `GetUserByFirebaseUid`, `GetUserById`, `ListUsers`, `UpdateUser`, `DeleteUser` (soft delete) — TypeORM ile `users` tablosuna yazar/okur.
+  - `DeleteUser` kaydı silmez, `isActive` alanını `false` yapar (soft delete). `GetUserById`/`ListUsers` sadece `isActive: true` kullanıcıları döner.
   - DB: `user-postgres` (tablo: `users`)
 
 ### Neden Firebase hem Admin SDK hem REST API?

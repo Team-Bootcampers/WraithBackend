@@ -6,6 +6,10 @@ package user;
 service UserService {
   rpc CreateUser (CreateUserRequest) returns (UserResponse);
   rpc GetUserByFirebaseUid (GetUserByFirebaseUidRequest) returns (UserResponse);
+  rpc GetUserById (GetUserByIdRequest) returns (UserResponse);
+  rpc ListUsers (ListUsersRequest) returns (ListUsersResponse);
+  rpc UpdateUser (UpdateUserRequest) returns (UserResponse);
+  rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
 }
 
 message CreateUserRequest {
@@ -18,10 +22,36 @@ message GetUserByFirebaseUidRequest {
   string firebaseUid = 1;
 }
 
+message GetUserByIdRequest {
+  string id = 1;
+}
+
+message ListUsersRequest {
+}
+
+message ListUsersResponse {
+  repeated UserResponse users = 1;
+  int32 total = 2;
+}
+
+message UpdateUserRequest {
+  string id = 1;
+  string displayName = 2;
+}
+
+message DeleteUserRequest {
+  string id = 1;
+}
+
+message DeleteUserResponse {
+  bool success = 1;
+}
+
 message UserResponse {
   string id = 1;
   string firebaseUid = 2;
   string email = 3;
   string displayName = 4;
   string createdAt = 5;
+  bool isActive = 6;
 }
