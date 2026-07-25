@@ -61,4 +61,16 @@ export class UserService {
     user.isActive = false;
     await this.userRepository.save(user);
   }
+
+  async updateOnboardingAnswers(userId: string, answers: Record<string, unknown>): Promise<UserEntity> {
+    const user = await this.getUserById(userId);
+    user.onboardingAnswers = answers;
+    user.isOnboarded = true;
+    return this.userRepository.save(user);
+  }
+
+  async getOnboardingAnswers(userId: string): Promise<Record<string, unknown> | null> {
+    const user = await this.getUserById(userId);
+    return user.onboardingAnswers ?? null;
+  }
 }

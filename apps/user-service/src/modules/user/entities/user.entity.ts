@@ -19,6 +19,12 @@ export class UserEntity {
   @Column({ name: 'is_active', default: true })
   isActive: boolean;
 
+  @Column({ name: 'onboarding_answers', type: 'jsonb', nullable: true })
+  onboardingAnswers?: Record<string, unknown> | null;
+
+  @Column({ name: 'is_onboarded', type: 'boolean', default: false })
+  isOnboarded: boolean;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 

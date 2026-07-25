@@ -10,6 +10,8 @@ service UserService {
   rpc ListUsers (ListUsersRequest) returns (ListUsersResponse);
   rpc UpdateUser (UpdateUserRequest) returns (UserResponse);
   rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
+  rpc UpdateOnboardingAnswers (UpdateOnboardingAnswersRequest) returns (UserResponse);
+  rpc GetOnboardingAnswers (GetOnboardingAnswersRequest) returns (OnboardingAnswersResponse);
 }
 
 message CreateUserRequest {
@@ -54,4 +56,20 @@ message UserResponse {
   string displayName = 4;
   string createdAt = 5;
   bool isActive = 6;
+  bool isOnboarded = 7;
+}
+
+message UpdateOnboardingAnswersRequest {
+  string id = 1;
+  // JSON.stringify edilmiş onboarding cevapları (jsonb kolonuna olduğu gibi yazılır).
+  string answers = 2;
+}
+
+message GetOnboardingAnswersRequest {
+  string id = 1;
+}
+
+message OnboardingAnswersResponse {
+  // JSON.stringify edilmiş onboarding cevapları, yoksa boş string.
+  string answers = 1;
 }

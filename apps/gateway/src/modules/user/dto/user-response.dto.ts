@@ -17,5 +17,8 @@ export class UserResponseDto {
   isActive: boolean;
 
   @ApiProperty()
+  isOnboarded: boolean;
+
+  @ApiProperty()
   createdAt: string;
 }

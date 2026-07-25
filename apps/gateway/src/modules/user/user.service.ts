@@ -32,6 +32,19 @@ export class UserService implements OnModuleInit {
     await this.callAndMapErrors(() => firstValueFrom(this.userClient.deleteUser({ id })));
   }
 
+  async updateOnboardingAnswers(id: string, answers: Record<string, unknown>): Promise<UserResponse> {
+    return this.callAndMapErrors(() =>
+      firstValueFrom(this.userClient.updateOnboardingAnswers({ id, answers: JSON.stringify(answers) })),
+    );
+  }
+
+  async getOnboardingAnswers(id: string): Promise<Record<string, unknown> | null> {
+    const response = await this.callAndMapErrors(() =>
+      firstValueFrom(this.userClient.getOnboardingAnswers({ id })),
+    );
+    return response.answers ? (JSON.parse(response.answers) as Record<string, unknown>) : null;
+  }
+
   private async callAndMapErrors<T>(call: () => Promise<T>): Promise<T> {
     try {
       return await call();
