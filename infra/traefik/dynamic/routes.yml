@@ -1,10 +1,22 @@
 http:
   routers:
+    # auth-service: api.localhost/auth/** → auth-service:3001
+    # Kural: Tüm HTTP servisler api.localhost altında PathPrefix ile yönlendirilir.
+    # Yeni servis eklerken bu dosyaya yeni bir router + service bloğu eklenir,
+    # farklı subdomain (*.localhost) KULLANILMAZ.
     auth-service:
-      rule: "Host(`auth.localhost`)"
+      rule: "Host(`api.localhost`) && PathPrefix(`/auth`)"
       entryPoints:
         - web
       service: auth-service
+      middlewares:
+        - default-headers
+
+    gateway:
+      rule: "Host(`api.localhost`)"
+      entryPoints:
+        - web
+      service: gateway
       middlewares:
         - default-headers
 
@@ -13,6 +25,15 @@ http:
       loadBalancer:
         servers:
           - url: "http://auth-service:3001"
+        healthCheck:
+          path: /health
+          interval: "5s"
+          timeout: "3s"
+
+    gateway:
+      loadBalancer:
+        servers:
+          - url: "http://gateway:3000"
         healthCheck:
           path: /health
           interval: "5s"

@@ -6,7 +6,7 @@ NestJS tabanlı, Traefik gateway, Firebase Auth, gRPC/NATS ve PostgreSQL & Mongo
 
 ```
 apps/                       Nest CLI monorepo altındaki her bir çalıştırılabilir servis
-  gateway/                  (henüz yazılmadı) Traefik arkasındaki tek giriş noktası
+  gateway/                  ✅ Traefik arkasındaki tek giriş noktası, user-service'i REST+Swagger olarak dışa açar
   auth-service/             ✅ Firebase Auth (signup/login) + kendi Postgres DB'si (login audit)
   user-service/             ✅ Kullanıcı profilleri, gRPC server, kendi Postgres DB'si
   catalog-service/          (henüz yazılmadı) Örnek domain servisi (MongoDB)
@@ -30,15 +30,24 @@ scripts/
 
 İki ayrı servis, aralarında **gRPC** ile konuşur, her birinin **kendi Postgres veritabanı** vardır:
 
-- **auth-service** (`apps/auth-service`, HTTP `:3001`, Traefik: `http://auth.localhost`)
+- **auth-service** (`apps/auth-service`, HTTP `:3001`, Traefik: `http://api.localhost/auth/**`)
   - `POST /auth/signup` — Firebase Admin SDK ile kullanıcı oluşturur, ardından gRPC ile `user-service`'te profil kaydı açar. `user-service` başarısız olursa Firebase'de sahipsiz hesap kalmasın diye **rollback** yapılır (`deleteUser`).
   - `POST /auth/login` — Firebase Identity Toolkit REST API (`signInWithPassword`) ile giriş yapar, `idToken`/`refreshToken` döner. Her deneme kendi DB'sindeki `login_audit` tablosuna yazılır. `user-service` o an ayakta değilse login **başarısız sayılmaz** (kimlik doğrulama zaten Firebase'de tamamlanmıştır) — sadece profil bilgisi `user: null` döner.
-  - Swagger: `http://auth.localhost/docs`
+  - Swagger: `http://api.localhost/docs`
   - DB: `auth-postgres` (tablo: `login_audit`)
 
 - **user-service** (`apps/user-service`, sadece gRPC `:5001`, dışa açık değil)
-  - `CreateUser`, `GetUserByFirebaseUid` — TypeORM ile `users` tablosuna yazar/okur.
+  - `CreateUser`, `GetUserByFirebaseUid`, `GetUserById`, `ListUsers`, `UpdateUser`, `DeleteUser` (soft delete) — TypeORM ile `users` tablosuna yazar/okur.
+  - `DeleteUser` kaydı silmez, `isActive` alanını `false` yapar (soft delete). `GetUserById`/`ListUsers` sadece `isActive: true` kullanıcıları döner.
   - DB: `user-postgres` (tablo: `users`)
+
+- **gateway** (`apps/gateway`, HTTP `:3000`, Traefik: `http://api.localhost`)
+  - `user-service`'in gRPC uçlarını REST+Swagger olarak dışa açar (dışarıdan gRPC'ye doğrudan erişim yok):
+    - `GET /users` — aktif kullanıcıları listeler
+    - `GET /users/:id` — kullanıcıyı id ile bulur (soft-deleted ise `404`)
+    - `PATCH /users/:id` — `displayName` günceller
+    - `DELETE /users/:id` — soft delete (`isActive = false`), `204` döner
+  - Swagger: `http://api.localhost/docs`
 
 ### Neden Firebase hem Admin SDK hem REST API?
 Firebase Admin SDK parola doğrulayamaz (sadece kullanıcı yönetimi yapar); email/parola ile giriş backend üzerinden yapılacaksa Identity Toolkit REST API'sinin (`FIREBASE_API_KEY`) kullanılması gerekir. Bu proje bu deseni izliyor: **signup → Admin SDK**, **login → REST API**.
@@ -70,7 +79,32 @@ docker compose up --build
 
 Bu değerler girilmeden de `docker compose up` sorunsuz çalışır ve Swagger açılır; sadece `/auth/signup` ve `/auth/login` istekleri `503`/`401` döner (servis çökmez).
 
+## Routing Kuralı (Bağlayıcı Mimari Kural)
+
+Bu projede tüm HTTP servisleri dış dünyaya **yalnızca tek bir domain** üzerinden açılır:
+
+| Domain | Kural |
+|---|---|
+| `api.localhost` | Tüm servisler için tek giriş noktası |
+| `*.localhost` (alt domain) | **KULLANILMAZ** — yeni servis eklerse mevcut pattern izlenir |
+
+**Yeni bir HTTP servisi eklerken şu adımlar izlenir:**
+1. `infra/traefik/dynamic/routes.yml` dosyasına yeni bir `router` + `service` bloğu eklenir.
+   - `rule: "Host('api.localhost') && PathPrefix('/yeni-servis-prefix')"`
+2. Servisin `main.ts` dosyasında Swagger `DocumentBuilder`'a `.addServer('http://api.localhost', 'API Gateway (dev)')` eklenir.
+3. NestJS controller'da `@Controller('yeni-servis-prefix')` prefix'i Traefik'teki PathPrefix ile eşleştirilir.
+4. Swagger: Her servisin `/docs` path'i Traefik üzerinden `api.localhost/docs` adresine yönlendirilir (gateway üzerinden konsolide edilir).
+
+**Mevcut prefix'ler:**
+
+| Prefix | Servis |
+|---|---|
+| `/auth` | auth-service (HTTP :3001) |
+| `/users` | gateway → user-service (gRPC :5001) |
+
+---
+
 ## Notlar
 - `apps/` yapısı Nest CLI monorepo modunu (`nest-cli.json` içinde `projects`) hedefler.
 - `synchronize: true` (TypeORM) sadece dev kolaylığı için; production'a geçerken migration'lara taşınmalı.
-- `gateway`, `catalog-service`, `notification-service`, `libs/` klasörleri sonraki fazlar için ayrılmış scaffold — henüz derlenebilir kod içermiyor.
+- `catalog-service`, `notification-service`, `libs/` klasörleri sonraki fazlar için ayrılmış scaffold — henüz derlenebilir kod içermiyor.

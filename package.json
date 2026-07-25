@@ -11,6 +11,9 @@
     "start:auth-service:dev": "nest start auth-service --watch",
     "start:user-service": "nest start user-service",
     "start:user-service:dev": "nest start user-service --watch",
+    "build:gateway": "nest build gateway",
+    "start:gateway": "nest start gateway",
+    "start:gateway:dev": "nest start gateway --watch",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "lint": "eslint \"apps/**/*.ts\" \"libs/**/*.ts\" --fix"
   },

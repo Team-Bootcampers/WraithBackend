@@ -12,7 +12,7 @@ fi
 
 docker compose up -d --build
 
-SWAGGER_URL="http://auth.localhost/docs"
+SWAGGER_URL="http://api.localhost/docs"
 echo "→ auth-service sağlıklı olması bekleniyor..."
 
 for _ in $(seq 1 30); do
