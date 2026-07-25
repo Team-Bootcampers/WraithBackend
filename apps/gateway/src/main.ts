@@ -51,7 +51,7 @@ async function bootstrap() {
     .setVersion('0.1.0')
     .addTag('users')
     .addTag('auth')
-    .addServer('http://api.localhost', 'API Gateway (dev)')
+    .addServer('https://wraithathon.gokhansal.com', 'API Gateway')
     .build();
 
   const mergedDoc = SwaggerModule.createDocument(app, config);
@@ -74,7 +74,7 @@ async function bootstrap() {
   const port = Number(process.env.GATEWAY_HTTP_PORT ?? 3000);
   await app.listen(port, '0.0.0.0');
   console.log(`gateway listening on http://localhost:${port}`);
-  console.log(`Swagger docs (birleşik): http://api.localhost/docs`);
+  console.log(`Swagger docs (birleşik): https://wraithathon.gokhansal.com/docs`);
 }
 
 bootstrap();

@@ -4,6 +4,7 @@ import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { USER_PACKAGE } from '../user-client/user-client.module';
 import { UserResponse, UserServiceGrpcClient } from '../user-client/user-service.interface';
+import { OnboardingAnswersDto } from './dto/save-onboarding.dto';
 
 @Injectable()
 export class UserService implements OnModuleInit {
@@ -30,6 +31,19 @@ export class UserService implements OnModuleInit {
 
   async deleteUser(id: string): Promise<void> {
     await this.callAndMapErrors(() => firstValueFrom(this.userClient.deleteUser({ id })));
+  }
+
+  async updateOnboardingAnswers(id: string, answers: OnboardingAnswersDto): Promise<UserResponse> {
+    return this.callAndMapErrors(() =>
+      firstValueFrom(this.userClient.updateOnboardingAnswers({ id, answers: JSON.stringify(answers) })),
+    );
+  }
+
+  async getOnboardingAnswers(id: string): Promise<OnboardingAnswersDto | null> {
+    const response = await this.callAndMapErrors(() =>
+      firstValueFrom(this.userClient.getOnboardingAnswers({ id })),
+    );
+    return response.answers ? (JSON.parse(response.answers) as OnboardingAnswersDto) : null;
   }
 
   private async callAndMapErrors<T>(call: () => Promise<T>): Promise<T> {

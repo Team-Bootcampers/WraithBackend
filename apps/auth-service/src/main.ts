@@ -16,7 +16,7 @@ async function bootstrap() {
     // Gateway üzerinden erişimde Swagger UI'ın doğru base URL'i kullanması için.
     // Yeni bir HTTP servis eklendiğinde bu servis de kendi main.ts'inde
     // api.localhost'u server olarak tanımlamalıdır.
-    .addServer('http://api.localhost', 'API Gateway (dev)')
+    .addServer('https://wraithathon.gokhansal.com', 'API Gateway')
     .build();
   const document = SwaggerModule.createDocument(app, config);
 
@@ -29,7 +29,7 @@ async function bootstrap() {
   const port = Number(process.env.AUTH_HTTP_PORT ?? 3001);
   await app.listen(port, '0.0.0.0');
   console.log(`auth-service listening on http://localhost:${port}`);
-  console.log(`Swagger docs (gateway): http://api.localhost/docs`);
+  console.log(`Swagger docs (gateway): https://wraithathon.gokhansal.com/docs`);
   console.log(`Auth OpenAPI spec: http://localhost:${port}/auth/api-json`);
 }
 

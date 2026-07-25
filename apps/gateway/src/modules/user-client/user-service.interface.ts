@@ -30,7 +30,21 @@ export interface UserResponse {
   email: string;
   displayName: string;
   isActive: boolean;
+  isOnboarded: boolean;
   createdAt: string;
+}
+
+export interface UpdateOnboardingAnswersRequest {
+  id: string;
+  answers: string;
+}
+
+export interface GetOnboardingAnswersRequest {
+  id: string;
+}
+
+export interface OnboardingAnswersResponse {
+  answers: string;
 }
 
 export interface UserServiceGrpcClient {
@@ -38,4 +52,6 @@ export interface UserServiceGrpcClient {
   listUsers(data: ListUsersRequest): Observable<ListUsersResponse>;
   updateUser(data: UpdateUserRequest): Observable<UserResponse>;
   deleteUser(data: DeleteUserRequest): Observable<DeleteUserResponse>;
+  updateOnboardingAnswers(data: UpdateOnboardingAnswersRequest): Observable<UserResponse>;
+  getOnboardingAnswers(data: GetOnboardingAnswersRequest): Observable<OnboardingAnswersResponse>;
 }

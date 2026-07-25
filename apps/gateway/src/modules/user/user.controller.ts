@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Put } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { OnboardingAnswersDto, SaveOnboardingDto } from './dto/save-onboarding.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponseDto } from './dto/user-response.dto';
 import { UserService } from './user.service';
@@ -39,5 +40,21 @@ export class UserController {
   @ApiResponse({ status: 204 })
   async remove(@Param('id') id: string): Promise<void> {
     await this.userService.deleteUser(id);
+  }
+
+  @Put(':id/onboarding')
+  @ApiOperation({ summary: 'Kullanıcının onboarding cevaplarını kaydeder/günceller' })
+  @ApiParam({ name: 'id' })
+  @ApiResponse({ status: 200, type: UserResponseDto })
+  saveOnboarding(@Param('id') id: string, @Body() dto: SaveOnboardingDto): Promise<UserResponseDto> {
+    return this.userService.updateOnboardingAnswers(id, dto.answers);
+  }
+
+  @Get(':id/onboarding')
+  @ApiOperation({ summary: 'Kullanıcının kayıtlı onboarding cevaplarını döner' })
+  @ApiParam({ name: 'id' })
+  @ApiResponse({ status: 200, type: OnboardingAnswersDto, description: 'Onboarding cevapları (yoksa null)' })
+  getOnboarding(@Param('id') id: string): Promise<OnboardingAnswersDto | null> {
+    return this.userService.getOnboardingAnswers(id);
   }
 }

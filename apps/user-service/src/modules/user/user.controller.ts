@@ -27,6 +27,15 @@ interface DeleteUserRequest {
   id: string;
 }
 
+interface UpdateOnboardingAnswersRequest {
+  id: string;
+  answers: string;
+}
+
+interface GetOnboardingAnswersRequest {
+  id: string;
+}
+
 @Controller()
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -105,6 +114,33 @@ export class UserController {
     }
   }
 
+  @GrpcMethod('UserService', 'UpdateOnboardingAnswers')
+  async updateOnboardingAnswers(data: UpdateOnboardingAnswersRequest) {
+    try {
+      const answers = JSON.parse(data.answers) as Record<string, unknown>;
+      const user = await this.userService.updateOnboardingAnswers(data.id, answers);
+      return this.toResponse(user);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new RpcException({ code: status.NOT_FOUND, message: error.message });
+      }
+      throw new RpcException({ code: status.INTERNAL, message: error.message });
+    }
+  }
+
+  @GrpcMethod('UserService', 'GetOnboardingAnswers')
+  async getOnboardingAnswers(data: GetOnboardingAnswersRequest) {
+    try {
+      const answers = await this.userService.getOnboardingAnswers(data.id);
+      return { answers: answers ? JSON.stringify(answers) : '' };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new RpcException({ code: status.NOT_FOUND, message: error.message });
+      }
+      throw new RpcException({ code: status.INTERNAL, message: error.message });
+    }
+  }
+
   private toResponse(user: UserEntity) {
     return {
       id: user.id,
@@ -112,6 +148,7 @@ export class UserController {
       email: user.email,
       displayName: user.displayName ?? '',
       isActive: user.isActive,
+      isOnboarded: user.isOnboarded,
       createdAt: user.createdAt.toISOString(),
     };
   }
