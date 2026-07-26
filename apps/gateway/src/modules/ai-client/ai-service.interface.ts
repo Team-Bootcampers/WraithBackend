@@ -93,3 +93,21 @@ export interface PlanTripResponse {
 export interface TripPlanningServiceGrpcClient {
   planTrip(data: PlanTripRequest): Observable<PlanTripResponse>;
 }
+
+export interface GenerateSurpriseTripRequest {
+  characterAnalysis: string;
+  // JSON.stringify edilmiş onboarding cevapları.
+  onboardingAnswers: string;
+  // JSON.stringify edilmiş sürpriz seyahat isteği (travelerCount, durationInDays, startDate, budget,
+  // departureCountry, departureCityName, surpriseScope, excludedCountryNames).
+  request: string;
+}
+
+export interface GenerateSurpriseTripResponse {
+  // JSON.stringify edilmiş SurpriseTripResponseDto sonucu.
+  result: string;
+}
+
+export interface SurpriseTripServiceGrpcClient {
+  generateSurpriseTrip(data: GenerateSurpriseTripRequest): Observable<GenerateSurpriseTripResponse>;
+}
