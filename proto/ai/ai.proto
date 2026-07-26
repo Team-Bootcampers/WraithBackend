@@ -10,6 +10,7 @@ service AiService {
   rpc RecommendRestaurants (RecommendRestaurantsRequest) returns (RecommendRestaurantsResponse);
   rpc RecommendAttractions (RecommendAttractionsRequest) returns (RecommendAttractionsResponse);
   rpc RecommendHotels (RecommendHotelsRequest) returns (RecommendHotelsResponse);
+  rpc RecommendTrips (RecommendTripsRequest) returns (RecommendTripsResponse);
 }
 
 message AnalyzeTravelPersonalityRequest {
@@ -73,6 +74,18 @@ message RecommendHotelsRequest {
 
 message RecommendHotelsResponse {
   // JSON.stringify edilmiş, kişiliğe uygun seçilmiş otel listesi (HotelResponse[] ile aynı şema).
+  string result = 1;
+}
+
+message RecommendTripsRequest {
+  // Kullanıcının seyahat kişiliği analiz metni.
+  string personalityAnalysis = 1;
+  // JSON.stringify edilmiş aday (public) seyahat listesi (trip-service'ten gelen TripResponse[]).
+  string trips = 2;
+}
+
+message RecommendTripsResponse {
+  // JSON.stringify edilmiş, kişiliğe uygun sıralanmış/seçilmiş seyahat listesi (TripResponse[] ile aynı şema).
   string result = 1;
 }
 

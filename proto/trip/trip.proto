@@ -1,0 +1,119 @@
+syntax = "proto3";
+
+package trip;
+
+// gateway bu servisi gRPC client olarak çağırır (trip-service = gRPC server).
+// Kendi Postgres DB'sine sahiptir; kullanıcıların oluşturduğu tüm seyahatleri tutar.
+service TripService {
+  rpc CreateTrip (CreateTripRequest) returns (TripResponse);
+  rpc GetTripById (GetTripByIdRequest) returns (TripResponse);
+  rpc ListTrips (ListTripsRequest) returns (ListTripsResponse);
+}
+
+enum TransportType {
+  AIRPLANE = 0;
+  BUS = 1;
+  CAR = 2;
+}
+
+message Money {
+  double amount = 1;
+  string currency = 2;
+}
+
+message Price {
+  double amount = 1;
+  string currency = 2;
+  string period = 3;
+}
+
+// hotel-service'in HotelResponse şemasıyla birebir aynı (seyahat oluşturulduğu andaki anlık kopya).
+message HotelSnapshot {
+  string id = 1;
+  string name = 2;
+  double rating = 3;
+  string address = 4;
+  Price price = 5;
+  repeated string images = 6;
+  string country = 7;
+  string cityName = 8;
+}
+
+// attraction-service'in AttractionResponse şemasıyla birebir aynı.
+message AttractionSnapshot {
+  string id = 1;
+  string name = 2;
+  double rating = 3;
+  string address = 4;
+  Price price = 5;
+  repeated string images = 6;
+  string country = 7;
+  string cityName = 8;
+}
+
+// restaurant-service'in RestaurantResponse şemasıyla birebir aynı.
+message RestaurantSnapshot {
+  string id = 1;
+  string name = 2;
+  double rating = 3;
+  string address = 4;
+  Price price = 5;
+  repeated string images = 6;
+  string country = 7;
+  string cityName = 8;
+}
+
+message TripStop {
+  int32 stopNumber = 1;
+  string country = 2;
+  string cityName = 3;
+  // ISO tarih (YYYY-MM-DD).
+  string startDate = 4;
+  // Boş string ise dönüş tarihi belirtilmemiştir (zorunlu değil).
+  string endDate = 5;
+  int32 personCount = 6;
+  TransportType transportType = 7;
+  // Durağın toplam maliyeti (ulaşım + otel + gezilecek yer + restoran).
+  Money totalCost = 8;
+  repeated HotelSnapshot hotels = 9;
+  repeated AttractionSnapshot attractions = 10;
+  repeated RestaurantSnapshot restaurants = 11;
+}
+
+message CreateTripRequest {
+  string userId = 1;
+  repeated TripStop stops = 2;
+  bool isPublic = 3;
+}
+
+message GetTripByIdRequest {
+  string id = 1;
+}
+
+message ListTripsRequest {
+  // Boş string ise filtre uygulanmaz.
+  string userId = 1;
+  // true ise sadece isPublic=true olan seyahatler döner.
+  bool onlyPublic = 2;
+  // true ise viewCount'a göre azalan sırada döner (popülerite).
+  bool sortByPopularity = 3;
+  // Herhangi bir durağı bu ülke/şehir ile eşleşen seyahatleri filtreler (boş string ise uygulanmaz).
+  string country = 4;
+  string cityName = 5;
+}
+
+message TripResponse {
+  string id = 1;
+  string userId = 2;
+  int32 stopCount = 3;
+  repeated TripStop stops = 4;
+  bool isPublic = 5;
+  int32 viewCount = 6;
+  string createdAt = 7;
+  string updatedAt = 8;
+}
+
+message ListTripsResponse {
+  repeated TripResponse trips = 1;
+  int32 total = 2;
+}
