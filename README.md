@@ -1,5 +1,7 @@
 # CoreBackendKit
 
+<img width="1512" height="830" alt="image" src="https://github.com/user-attachments/assets/1aa8ea2e-1e1e-494e-b150-8579cea539c2" />
+
 NestJS tabanlı mikroservis backend'i. Tüm dış trafik **Traefik** üzerinden tek bir domain'e (`api.localhost` / prod'da `wraithathon.gokhansal.com`) düşer; servisler birbiriyle **gRPC** ile konuşur, event-driven akışlar için **NATS** planlanmıştır. Her servisin kendi veritabanı vardır: ilişkisel veriler **PostgreSQL** + **TypeORM**, doküman tabanlı veriler için **MongoDB** ayrılmıştır. Kimlik doğrulama Firebase Auth ile yapılır; parola/secret gerektiren senaryolar için **bcrypt** kullanılır.
 
 ## Teknoloji Yığını
