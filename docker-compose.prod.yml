@@ -1,0 +1,33 @@
+name: corebackendkit
+
+# Prod ortamında build yerine CI'da GHCR'a push edilmiş image'lar kullanılır.
+# Kullanım: docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
+#           docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+#
+# IMAGE_NAMESPACE .env içinde tanımlı olmalı, ör:
+# IMAGE_NAMESPACE=ghcr.io/team-bootcampers/wraithbackend
+
+services:
+  user-service:
+    image: ${IMAGE_NAMESPACE}/user-service:latest
+
+  ai-service:
+    image: ${IMAGE_NAMESPACE}/ai-service:latest
+
+  hotel-service:
+    image: ${IMAGE_NAMESPACE}/hotel-service:latest
+
+  restaurant-service:
+    image: ${IMAGE_NAMESPACE}/restaurant-service:latest
+
+  attraction-service:
+    image: ${IMAGE_NAMESPACE}/attraction-service:latest
+
+  trip-service:
+    image: ${IMAGE_NAMESPACE}/trip-service:latest
+
+  auth-service:
+    image: ${IMAGE_NAMESPACE}/auth-service:latest
+
+  gateway:
+    image: ${IMAGE_NAMESPACE}/gateway:latest
