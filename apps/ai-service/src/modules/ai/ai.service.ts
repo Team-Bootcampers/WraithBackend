@@ -3,6 +3,7 @@ import { GeminiClientService } from '../gemini/gemini-client.service';
 import { RESTAURANT_RECOMMENDATION_RESPONSE_SCHEMA } from './restaurant-recommendation.schema';
 import { ATTRACTION_RECOMMENDATION_RESPONSE_SCHEMA } from './attraction-recommendation.schema';
 import { HOTEL_RECOMMENDATION_RESPONSE_SCHEMA } from './hotel-recommendation.schema';
+import { TRIP_RECOMMENDATION_RESPONSE_SCHEMA } from './trip-recommendation.schema';
 
 export interface RestaurantPrice {
   amount: number;
@@ -53,6 +54,17 @@ export interface HotelCandidate {
   images: string[];
   country: string;
   cityName: string;
+}
+
+export interface TripCandidate {
+  id: string;
+  userId: string;
+  stopCount: number;
+  stops: unknown[];
+  isPublic: boolean;
+  viewCount: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface TravelRoutePlace {
@@ -250,6 +262,38 @@ export class AiService {
       return JSON.parse(text) as HotelCandidate[];
     } catch {
       throw new InternalServerErrorException('Gemini geçerli bir otel önerisi JSON\'u döndürmedi');
+    }
+  }
+
+  async recommendTrips(personalityAnalysis: string, trips: TripCandidate[]): Promise<TripCandidate[]> {
+    const prompt = [
+      'Sen uzman bir seyahat asistanısın. Amacın, verilen aday (public olarak paylaşılmış) seyahat listesi',
+      'içinden kullanıcının seyahat kişiliği analizine en uygun olanları seçmektir.',
+      '',
+      'GİRDİLER:',
+      `Kullanıcının Kişilik Analizi: ${personalityAnalysis}`,
+      `Aday Seyahat Listesi (JSON): ${JSON.stringify(trips)}`,
+      '',
+      'KURALLAR:',
+      '1. Sadece yukarıdaki aday listede bulunan seyahatler arasından seçim yap; yeni seyahat uydurma.',
+      '2. Seçtiğin her seyahatin tüm alanlarını (id, userId, stopCount, stops, isPublic, viewCount, createdAt,',
+      '   updatedAt ve durakların tüm alt alanları dahil) aday listedeki değerleriyle BİREBİR aynı şekilde',
+      '   döndür; hiçbir alanı değiştirme.',
+      '3. Seyahatleri, kullanıcının kişiliğine (örn. bütçe önceliği, tercih ettiği aktivite tipi, ülke/şehir',
+      '   ilgisi) en uygun olandan en az uygun olana doğru sırala.',
+      '4. Aday listede uygun seyahat yoksa boş dizi döndür.',
+      '5. Sadece response şemasına uyan JSON döndür; markdown kod bloğu, açıklama veya selamlama ekleme.',
+    ].join('\n');
+
+    const text = await this.geminiClient.generateContent(prompt, {
+      responseMimeType: 'application/json',
+      responseSchema: TRIP_RECOMMENDATION_RESPONSE_SCHEMA,
+    });
+
+    try {
+      return JSON.parse(text) as TripCandidate[];
+    } catch {
+      throw new InternalServerErrorException('Gemini geçerli bir seyahat önerisi JSON\'u döndürmedi');
     }
   }
 }
