@@ -12,6 +12,10 @@ service TripService {
   rpc PublishTrip (PublishTripRequest) returns (TripResponse);
   // Kullanıcı seyahate 1-5 arası puan verir; aynı kullanıcı tekrar oy verirse güncellenir.
   rpc VoteTrip (VoteTripRequest) returns (TripResponse);
+  // Sadece seyahatin sahibi güncelleyebilir; gönderilmeyen alanlar değiştirilmez (has* bayraklarıyla belirlenir).
+  rpc UpdateTrip (UpdateTripRequest) returns (TripResponse);
+  // Sadece seyahatin sahibi silebilir; soft delete yapar (isDeleted = true).
+  rpc DeleteTrip (DeleteTripRequest) returns (DeleteTripResponse);
 }
 
 enum TransportType {
@@ -116,6 +120,30 @@ message VoteTripRequest {
   string id = 1;
   string userId = 2;
   int32 score = 3;
+}
+
+message UpdateTripRequest {
+  string id = 1;
+  // İşlemi yapan kullanıcı; seyahatin sahibi değilse PERMISSION_DENIED döner.
+  string userId = 2;
+  repeated TripStop stops = 3;
+  bool hasStops = 4;
+  bool isPublic = 5;
+  bool hasIsPublic = 6;
+  string title = 7;
+  bool hasTitle = 8;
+  string description = 9;
+  bool hasDescription = 10;
+}
+
+message DeleteTripRequest {
+  string id = 1;
+  // İşlemi yapan kullanıcı; seyahatin sahibi değilse PERMISSION_DENIED döner.
+  string userId = 2;
+}
+
+message DeleteTripResponse {
+  bool success = 1;
 }
 
 message TripResponse {

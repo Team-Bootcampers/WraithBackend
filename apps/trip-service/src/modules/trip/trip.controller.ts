@@ -1,4 +1,4 @@
-import { BadRequestException, Controller, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Controller, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
 import { TripEntity, TripStop } from './entities/trip.entity';
@@ -36,6 +36,24 @@ interface VoteTripRequest {
   id: string;
   userId: string;
   score: number;
+}
+
+interface UpdateTripRequest {
+  id: string;
+  userId: string;
+  stops: GrpcTripStop[];
+  hasStops: boolean;
+  isPublic: boolean;
+  hasIsPublic: boolean;
+  title: string;
+  hasTitle: boolean;
+  description: string;
+  hasDescription: boolean;
+}
+
+interface DeleteTripRequest {
+  id: string;
+  userId: string;
 }
 
 @Controller()
@@ -102,6 +120,43 @@ export class TripController {
       }
       if (error instanceof BadRequestException) {
         throw new RpcException({ code: status.INVALID_ARGUMENT, message: error.message });
+      }
+      throw new RpcException({ code: status.INTERNAL, message: error.message });
+    }
+  }
+
+  @GrpcMethod('TripService', 'UpdateTrip')
+  async updateTrip(data: UpdateTripRequest) {
+    try {
+      const trip = await this.tripService.updateTrip(data.id, data.userId, {
+        stops: data.hasStops ? data.stops.map((stop) => this.fromGrpcStop(stop)) : undefined,
+        isPublic: data.hasIsPublic ? data.isPublic : undefined,
+        title: data.hasTitle ? data.title : undefined,
+        description: data.hasDescription ? data.description : undefined,
+      });
+      return this.toResponse(trip);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new RpcException({ code: status.NOT_FOUND, message: error.message });
+      }
+      if (error instanceof ForbiddenException) {
+        throw new RpcException({ code: status.PERMISSION_DENIED, message: error.message });
+      }
+      throw new RpcException({ code: status.INTERNAL, message: error.message });
+    }
+  }
+
+  @GrpcMethod('TripService', 'DeleteTrip')
+  async deleteTrip(data: DeleteTripRequest) {
+    try {
+      await this.tripService.deleteTrip(data.id, data.userId);
+      return { success: true };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new RpcException({ code: status.NOT_FOUND, message: error.message });
+      }
+      if (error instanceof ForbiddenException) {
+        throw new RpcException({ code: status.PERMISSION_DENIED, message: error.message });
       }
       throw new RpcException({ code: status.INTERNAL, message: error.message });
     }
