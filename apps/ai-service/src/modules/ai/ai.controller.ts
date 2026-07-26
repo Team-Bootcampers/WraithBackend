@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
-import { AiService, AttractionCandidate, RestaurantCandidate } from './ai.service';
+import { AiService, AttractionCandidate, HotelCandidate, RestaurantCandidate, TripCandidate } from './ai.service';
 
 interface AnalyzeTravelPersonalityRequest {
   answers: string;
@@ -25,6 +25,18 @@ interface RecommendAttractionsRequest {
   city: string;
   personalityAnalysis: string;
   attractions: string;
+}
+
+interface RecommendHotelsRequest {
+  country: string;
+  city: string;
+  personalityAnalysis: string;
+  hotels: string;
+}
+
+interface RecommendTripsRequest {
+  personalityAnalysis: string;
+  trips: string;
 }
 
 @Controller()
@@ -79,6 +91,33 @@ export class AiController {
         data.personalityAnalysis,
         attractions,
       );
+      return { result: JSON.stringify(recommended) };
+    } catch (error) {
+      throw new RpcException({ code: status.INTERNAL, message: (error as Error).message });
+    }
+  }
+
+  @GrpcMethod('AiService', 'RecommendHotels')
+  async recommendHotels(data: RecommendHotelsRequest) {
+    try {
+      const hotels = JSON.parse(data.hotels) as HotelCandidate[];
+      const recommended = await this.aiService.recommendHotels(
+        data.country,
+        data.city,
+        data.personalityAnalysis,
+        hotels,
+      );
+      return { result: JSON.stringify(recommended) };
+    } catch (error) {
+      throw new RpcException({ code: status.INTERNAL, message: (error as Error).message });
+    }
+  }
+
+  @GrpcMethod('AiService', 'RecommendTrips')
+  async recommendTrips(data: RecommendTripsRequest) {
+    try {
+      const trips = JSON.parse(data.trips) as TripCandidate[];
+      const recommended = await this.aiService.recommendTrips(data.personalityAnalysis, trips);
       return { result: JSON.stringify(recommended) };
     } catch (error) {
       throw new RpcException({ code: status.INTERNAL, message: (error as Error).message });

@@ -44,11 +44,37 @@ export interface RecommendAttractionsResponse {
   result: string;
 }
 
+export interface RecommendHotelsRequest {
+  country: string;
+  city: string;
+  personalityAnalysis: string;
+  // JSON.stringify edilmiş aday otel listesi (HotelResponse[]).
+  hotels: string;
+}
+
+export interface RecommendHotelsResponse {
+  // JSON.stringify edilmiş, kişiliğe uygun seçilmiş otel listesi (HotelResponse[]).
+  result: string;
+}
+
+export interface RecommendTripsRequest {
+  personalityAnalysis: string;
+  // JSON.stringify edilmiş aday (public) seyahat listesi (trip-service'ten gelen TripResponse[]).
+  trips: string;
+}
+
+export interface RecommendTripsResponse {
+  // JSON.stringify edilmiş, kişiliğe uygun sıralanmış seyahat listesi (TripResponse[] ile aynı şema).
+  result: string;
+}
+
 export interface AiServiceGrpcClient {
   analyzeTravelPersonality(data: AnalyzeTravelPersonalityRequest): Observable<AnalyzeTravelPersonalityResponse>;
   generateTravelRoute(data: GenerateTravelRouteRequest): Observable<GenerateTravelRouteResponse>;
   recommendRestaurants(data: RecommendRestaurantsRequest): Observable<RecommendRestaurantsResponse>;
   recommendAttractions(data: RecommendAttractionsRequest): Observable<RecommendAttractionsResponse>;
+  recommendHotels(data: RecommendHotelsRequest): Observable<RecommendHotelsResponse>;
+  recommendTrips(data: RecommendTripsRequest): Observable<RecommendTripsResponse>;
 }
 
 export interface PlanTripRequest {

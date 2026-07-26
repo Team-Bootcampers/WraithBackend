@@ -10,10 +10,10 @@ export class HotelController {
   constructor(private readonly hotelService: HotelService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Belirtilen ülke ve şehirdeki otelleri listeler' })
+  @ApiOperation({ summary: 'Belirtilen ülke ve şehirdeki oteller arasından kullanıcının kişiliğine uygun olanları önerir' })
   @ApiResponse({ status: 200, type: [HotelResponseDto] })
   list(@Query() query: ListHotelsQueryDto): Promise<HotelResponseDto[]> {
-    return this.hotelService.listHotels(query.country, query.city);
+    return this.hotelService.listHotels(query.country, query.city, query.personalityAnalysis);
   }
 
   @Get(':id')

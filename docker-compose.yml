@@ -197,6 +197,43 @@ services:
       - backbone
     restart: unless-stopped
 
+  trip-postgres:
+    image: postgres:16-alpine
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${TRIP_DB_USER}
+      POSTGRES_PASSWORD: ${TRIP_DB_PASSWORD}
+      POSTGRES_DB: ${TRIP_DB_NAME}
+    volumes:
+      - trip_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${TRIP_DB_USER}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - backbone
+    restart: unless-stopped
+
+  trip-service:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile
+      args:
+        APP_NAME: trip-service
+    env_file: .env
+    depends_on:
+      trip-postgres:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "node", "-e", "require('net').connect(process.env.TRIP_GRPC_PORT||5006,'localhost').on('connect',()=>process.exit(0)).on('error',()=>process.exit(1))" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - backbone
+    restart: unless-stopped
+
   auth-service:
     build:
       context: .
@@ -236,6 +273,8 @@ services:
         condition: service_started
       attraction-service:
         condition: service_started
+      trip-service:
+        condition: service_started
       # Gateway bootstrap'ta auth-service spec'ini fetch eder;
       # auth-service sağlıklı olmadan başlamaz.
       auth-service:
@@ -270,3 +309,4 @@ volumes:
   hotel_postgres_data:
   restaurant_postgres_data:
   attraction_postgres_data:
+  trip_postgres_data:

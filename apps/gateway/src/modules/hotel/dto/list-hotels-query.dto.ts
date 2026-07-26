@@ -11,4 +11,9 @@ export class ListHotelsQueryDto {
   @IsString()
   @IsNotEmpty()
   city: string;
+
+  @ApiProperty({ description: 'Kullanıcının seyahat kişiliği analiz metni (kişiye uygun otelleri belirlemek için kullanılır)' })
+  @IsString()
+  @IsNotEmpty()
+  personalityAnalysis: string;
 }
