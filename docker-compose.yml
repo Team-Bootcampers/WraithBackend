@@ -309,3 +309,4 @@ volumes:
   hotel_postgres_data:
   restaurant_postgres_data:
   attraction_postgres_data:
+  trip_postgres_data:
