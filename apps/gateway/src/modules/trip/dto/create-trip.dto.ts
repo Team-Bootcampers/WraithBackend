@@ -16,7 +16,7 @@ import {
 } from 'class-validator';
 import { TransportType } from './transport-type.enum';
 
-export class MoneyDto {
+export class TripMoneyDto {
   @ApiProperty({ example: 3200 })
   @IsNumber()
   @Min(0)
@@ -28,7 +28,7 @@ export class MoneyDto {
   currency: string;
 }
 
-export class PriceDto {
+export class TripPriceDto {
   @ApiProperty({ example: 1500 })
   @IsNumber()
   @Min(0)
@@ -45,34 +45,34 @@ export class PriceDto {
   period: string;
 }
 
-export class HotelSnapshotDto {
+export class TripHotelSnapshotDto {
   @ApiProperty() @IsString() @IsNotEmpty() id: string;
   @ApiProperty() @IsString() @IsNotEmpty() name: string;
   @ApiProperty() @IsNumber() rating: number;
   @ApiProperty() @IsString() @IsNotEmpty() address: string;
-  @ApiProperty({ type: PriceDto }) @ValidateNested() @Type(() => PriceDto) price: PriceDto;
+  @ApiProperty({ type: TripPriceDto }) @ValidateNested() @Type(() => TripPriceDto) price: TripPriceDto;
   @ApiProperty({ type: [String] }) @IsArray() @IsString({ each: true }) images: string[];
   @ApiProperty() @IsString() @IsNotEmpty() country: string;
   @ApiProperty() @IsString() @IsNotEmpty() cityName: string;
 }
 
-export class AttractionSnapshotDto {
+export class TripAttractionSnapshotDto {
   @ApiProperty() @IsString() @IsNotEmpty() id: string;
   @ApiProperty() @IsString() @IsNotEmpty() name: string;
   @ApiProperty() @IsNumber() rating: number;
   @ApiProperty() @IsString() @IsNotEmpty() address: string;
-  @ApiProperty({ type: PriceDto }) @ValidateNested() @Type(() => PriceDto) price: PriceDto;
+  @ApiProperty({ type: TripPriceDto }) @ValidateNested() @Type(() => TripPriceDto) price: TripPriceDto;
   @ApiProperty({ type: [String] }) @IsArray() @IsString({ each: true }) images: string[];
   @ApiProperty() @IsString() @IsNotEmpty() country: string;
   @ApiProperty() @IsString() @IsNotEmpty() cityName: string;
 }
 
-export class RestaurantSnapshotDto {
+export class TripRestaurantSnapshotDto {
   @ApiProperty() @IsString() @IsNotEmpty() id: string;
   @ApiProperty() @IsString() @IsNotEmpty() name: string;
   @ApiProperty() @IsNumber() rating: number;
   @ApiProperty() @IsString() @IsNotEmpty() address: string;
-  @ApiProperty({ type: PriceDto }) @ValidateNested() @Type(() => PriceDto) price: PriceDto;
+  @ApiProperty({ type: TripPriceDto }) @ValidateNested() @Type(() => TripPriceDto) price: TripPriceDto;
   @ApiProperty({ type: [String] }) @IsArray() @IsString({ each: true }) images: string[];
   @ApiProperty() @IsString() @IsNotEmpty() country: string;
   @ApiProperty() @IsString() @IsNotEmpty() cityName: string;
@@ -112,28 +112,28 @@ export class TripStopDto {
   @IsEnum(TransportType)
   transportType: TransportType;
 
-  @ApiProperty({ type: MoneyDto, description: 'Durağın toplam maliyeti' })
+  @ApiProperty({ type: TripMoneyDto, description: 'Durağın toplam maliyeti' })
   @ValidateNested()
-  @Type(() => MoneyDto)
-  totalCost: MoneyDto;
+  @Type(() => TripMoneyDto)
+  totalCost: TripMoneyDto;
 
-  @ApiProperty({ type: [HotelSnapshotDto] })
+  @ApiProperty({ type: [TripHotelSnapshotDto] })
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => HotelSnapshotDto)
-  hotels: HotelSnapshotDto[];
+  @Type(() => TripHotelSnapshotDto)
+  hotels: TripHotelSnapshotDto[];
 
-  @ApiProperty({ type: [AttractionSnapshotDto] })
+  @ApiProperty({ type: [TripAttractionSnapshotDto] })
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => AttractionSnapshotDto)
-  attractions: AttractionSnapshotDto[];
+  @Type(() => TripAttractionSnapshotDto)
+  attractions: TripAttractionSnapshotDto[];
 
-  @ApiProperty({ type: [RestaurantSnapshotDto] })
+  @ApiProperty({ type: [TripRestaurantSnapshotDto] })
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => RestaurantSnapshotDto)
-  restaurants: RestaurantSnapshotDto[];
+  @Type(() => TripRestaurantSnapshotDto)
+  restaurants: TripRestaurantSnapshotDto[];
 }
 
 export class CreateTripDto {

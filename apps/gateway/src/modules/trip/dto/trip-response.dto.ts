@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { TransportType } from './transport-type.enum';
-import { HotelSnapshotDto, AttractionSnapshotDto, MoneyDto, RestaurantSnapshotDto } from './create-trip.dto';
+import { TripHotelSnapshotDto, TripAttractionSnapshotDto, TripMoneyDto, TripRestaurantSnapshotDto } from './create-trip.dto';
 
 export class TripStopResponseDto {
   @ApiProperty() stopNumber: number;
@@ -10,10 +10,10 @@ export class TripStopResponseDto {
   @ApiProperty({ description: 'Dönüş tarihi belirtilmemişse boş string' }) endDate: string;
   @ApiProperty() personCount: number;
   @ApiProperty({ enum: TransportType }) transportType: TransportType;
-  @ApiProperty({ type: MoneyDto }) totalCost: MoneyDto;
-  @ApiProperty({ type: [HotelSnapshotDto] }) hotels: HotelSnapshotDto[];
-  @ApiProperty({ type: [AttractionSnapshotDto] }) attractions: AttractionSnapshotDto[];
-  @ApiProperty({ type: [RestaurantSnapshotDto] }) restaurants: RestaurantSnapshotDto[];
+  @ApiProperty({ type: TripMoneyDto }) totalCost: TripMoneyDto;
+  @ApiProperty({ type: [TripHotelSnapshotDto] }) hotels: TripHotelSnapshotDto[];
+  @ApiProperty({ type: [TripAttractionSnapshotDto] }) attractions: TripAttractionSnapshotDto[];
+  @ApiProperty({ type: [TripRestaurantSnapshotDto] }) restaurants: TripRestaurantSnapshotDto[];
 }
 
 export class TripResponseDto {

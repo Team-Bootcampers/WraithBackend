@@ -18,7 +18,10 @@ export const TRIP_PACKAGE = 'TRIP_PACKAGE';
             package: 'trip',
             protoPath: join(process.cwd(), 'proto/trip/trip.proto'),
             url: config.get<string>('TRIP_SERVICE_GRPC_URL'),
-            loader: { enums: String },
+            // arrays: true olmadan boş bir "repeated" alan (ör. sonuç 0 seyahat döndürünce trips[])
+            // wire'da hiç yer almadığından decode edilen objede undefined olarak kalır ve
+            // response.trips.map(...) TypeError fırlatır; bu yüzden zorunlu.
+            loader: { enums: String, arrays: true },
           },
         }),
       },
