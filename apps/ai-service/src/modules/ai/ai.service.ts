@@ -62,7 +62,11 @@ export interface TripCandidate {
   stopCount: number;
   stops: unknown[];
   isPublic: boolean;
+  title: string;
+  description: string;
   viewCount: number;
+  ratingAverage: number;
+  ratingCount: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -276,9 +280,9 @@ export class AiService {
       '',
       'KURALLAR:',
       '1. Sadece yukarıdaki aday listede bulunan seyahatler arasından seçim yap; yeni seyahat uydurma.',
-      '2. Seçtiğin her seyahatin tüm alanlarını (id, userId, stopCount, stops, isPublic, viewCount, createdAt,',
-      '   updatedAt ve durakların tüm alt alanları dahil) aday listedeki değerleriyle BİREBİR aynı şekilde',
-      '   döndür; hiçbir alanı değiştirme.',
+      '2. Seçtiğin her seyahatin tüm alanlarını (id, userId, stopCount, stops, isPublic, title, description,',
+      '   viewCount, ratingAverage, ratingCount, createdAt, updatedAt ve durakların tüm alt alanları dahil)',
+      '   aday listedeki değerleriyle BİREBİR aynı şekilde döndür; hiçbir alanı değiştirme.',
       '3. Seyahatleri, kullanıcının kişiliğine (örn. bütçe önceliği, tercih ettiği aktivite tipi, ülke/şehir',
       '   ilgisi) en uygun olandan en az uygun olana doğru sırala.',
       '4. Aday listede uygun seyahat yoksa boş dizi döndür.',

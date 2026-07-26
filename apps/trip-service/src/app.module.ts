@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TripEntity } from './modules/trip/entities/trip.entity';
+import { TripVoteEntity } from './modules/trip/entities/trip-vote.entity';
 import { TripModule } from './modules/trip/trip.module';
 
 @Module({
@@ -17,7 +18,7 @@ import { TripModule } from './modules/trip/trip.module';
         username: config.get<string>('TRIP_DB_USER'),
         password: config.get<string>('TRIP_DB_PASSWORD'),
         database: config.get<string>('TRIP_DB_NAME'),
-        entities: [TripEntity],
+        entities: [TripEntity, TripVoteEntity],
         // Dev kolaylığı için açık. Prod'a geçerken migration'lara taşınmalı.
         synchronize: config.get<string>('NODE_ENV') !== 'production',
       }),

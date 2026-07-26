@@ -80,13 +80,30 @@ export interface ListTripsRequest {
   cityName?: string;
 }
 
+export interface PublishTripRequest {
+  id: string;
+  title: string;
+  description: string;
+}
+
+export interface VoteTripRequest {
+  id: string;
+  userId: string;
+  score: number;
+}
+
 export interface TripResponse {
   id: string;
   userId: string;
   stopCount: number;
   stops: TripStop[];
   isPublic: boolean;
+  // Public değilse boş string.
+  title: string;
+  description: string;
   viewCount: number;
+  ratingAverage: number;
+  ratingCount: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -100,4 +117,6 @@ export interface TripServiceGrpcClient {
   createTrip(data: CreateTripRequest): Observable<TripResponse>;
   getTripById(data: GetTripByIdRequest): Observable<TripResponse>;
   listTrips(data: ListTripsRequest): Observable<ListTripsResponse>;
+  publishTrip(data: PublishTripRequest): Observable<TripResponse>;
+  voteTrip(data: VoteTripRequest): Observable<TripResponse>;
 }

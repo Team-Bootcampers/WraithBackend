@@ -1,7 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TripEntity, TripStop } from './entities/trip.entity';
+import { TripVoteEntity } from './entities/trip-vote.entity';
 
 export interface ListTripsFilter {
   userId?: string;
@@ -16,6 +17,8 @@ export class TripService {
   constructor(
     @InjectRepository(TripEntity)
     private readonly tripRepository: Repository<TripEntity>,
+    @InjectRepository(TripVoteEntity)
+    private readonly tripVoteRepository: Repository<TripVoteEntity>,
   ) {}
 
   async createTrip(userId: string, stops: TripStop[], isPublic: boolean): Promise<TripEntity> {
@@ -72,5 +75,48 @@ export class TripService {
     }
 
     return qb.getMany();
+  }
+
+  async publishTrip(id: string, title: string, description: string): Promise<TripEntity> {
+    const trip = await this.tripRepository.findOne({ where: { id } });
+    if (!trip) {
+      throw new NotFoundException(`Trip with id ${id} not found`);
+    }
+
+    trip.isPublic = true;
+    trip.title = title;
+    trip.description = description;
+    return this.tripRepository.save(trip);
+  }
+
+  async voteTrip(id: string, userId: string, score: number): Promise<TripEntity> {
+    if (!Number.isInteger(score) || score < 1 || score > 5) {
+      throw new BadRequestException('score 1 ile 5 arasında bir tam sayı olmalıdır');
+    }
+
+    const trip = await this.tripRepository.findOne({ where: { id } });
+    if (!trip) {
+      throw new NotFoundException(`Trip with id ${id} not found`);
+    }
+
+    const existingVote = await this.tripVoteRepository.findOne({ where: { tripId: id, userId } });
+    if (existingVote) {
+      existingVote.score = score;
+      await this.tripVoteRepository.save(existingVote);
+    } else {
+      await this.tripVoteRepository.save(this.tripVoteRepository.create({ tripId: id, userId, score }));
+    }
+
+    const { average, count } = await this.tripVoteRepository
+      .createQueryBuilder('vote')
+      .select('AVG(vote.score)', 'average')
+      .addSelect('COUNT(vote.id)', 'count')
+      .where('vote.trip_id = :id', { id })
+      .getRawOne<{ average: string; count: string }>()
+      .then((raw) => ({ average: Number(raw?.average ?? 0), count: Number(raw?.count ?? 0) }));
+
+    trip.ratingAverage = average;
+    trip.ratingCount = count;
+    return this.tripRepository.save(trip);
   }
 }
