@@ -108,3 +108,26 @@ message PlanTripResponse {
   // JSON.stringify edilmiş TripPlanDto sonucu.
   string result = 1;
 }
+
+// Kullanıcı hiçbir destinasyon belirtmeden; karakter analizi, onboarding tercihleri, toplam bütçe
+// ve seyahat süresine dayanarak sürpriz bir destinasyon ve o destinasyona özel eksiksiz bir seyahat
+// planı üretir.
+service SurpriseTripService {
+  rpc GenerateSurpriseTrip (GenerateSurpriseTripRequest) returns (GenerateSurpriseTripResponse);
+}
+
+message GenerateSurpriseTripRequest {
+  // Onboarding'de Gemini'nin ürettiği seyahat kişiliği analiz metni.
+  string characterAnalysis = 1;
+  // JSON.stringify edilmiş onboarding cevapları (OnboardingAnswersDto).
+  string onboardingAnswers = 2;
+  // JSON.stringify edilmiş sürpriz seyahat isteği (SurpriseTripRequestData: travelerCount,
+  // durationInDays, startDate, budget, departureCountry, departureCityName, surpriseScope,
+  // excludedCountryNames).
+  string request = 3;
+}
+
+message GenerateSurpriseTripResponse {
+  // JSON.stringify edilmiş SurpriseTripResponseDto sonucu.
+  string result = 1;
+}

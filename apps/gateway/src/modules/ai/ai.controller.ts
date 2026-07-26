@@ -2,6 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AnalyzeTravelPersonalityDto, TravelPersonalityResponseDto } from './dto/analyze-travel-personality.dto';
 import { GenerateTravelRouteDto, TravelRouteResponseDto } from './dto/generate-travel-route.dto';
+import { GenerateSurpriseTripDto, SurpriseTripResponseDto } from './dto/surprise-trip.dto';
 import { PlanTripDto, TripPlanResponseDto } from './dto/trip-planning.dto';
 import { AiService } from './ai.service';
 
@@ -30,5 +31,15 @@ export class AiController {
   @ApiResponse({ status: 201, type: TripPlanResponseDto })
   async planTrip(@Body() dto: PlanTripDto): Promise<TripPlanResponseDto> {
     return this.aiService.planTrip(dto);
+  }
+
+  @Post('surprise-trip')
+  @ApiOperation({
+    summary:
+      'Kullanıcı hiçbir destinasyon seçmeden; karakter analizi, onboarding tercihleri, bütçe ve süreye göre Gemini ile sürpriz bir destinasyon ve eksiksiz bir seyahat planı üretir',
+  })
+  @ApiResponse({ status: 201, type: SurpriseTripResponseDto })
+  async generateSurpriseTrip(@Body() dto: GenerateSurpriseTripDto): Promise<SurpriseTripResponseDto> {
+    return this.aiService.generateSurpriseTrip(dto);
   }
 }
