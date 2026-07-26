@@ -85,6 +85,11 @@ export class TripEntity {
   @Column({ name: 'is_public', type: 'boolean', default: false })
   isPublic: boolean;
 
+  // Soft delete flag; silinen seyahatler DB'de kalır ama getTripById/listTrips sonuçlarından hariç tutulur.
+  @Index()
+  @Column({ name: 'is_deleted', type: 'boolean', default: false })
+  isDeleted: boolean;
+
   // Sadece public yapılırken (PublishTrip) doldurulur.
   @Column({ type: 'varchar', nullable: true })
   title: string | null;

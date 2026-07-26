@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TripEntity, TripStop } from './entities/trip.entity';
@@ -10,6 +10,13 @@ export interface ListTripsFilter {
   sortByPopularity?: boolean;
   country?: string;
   cityName?: string;
+}
+
+export interface UpdateTripParams {
+  stops?: TripStop[];
+  isPublic?: boolean;
+  title?: string;
+  description?: string;
 }
 
 @Injectable()
@@ -32,7 +39,7 @@ export class TripService {
   }
 
   async getTripById(id: string): Promise<TripEntity> {
-    const trip = await this.tripRepository.findOne({ where: { id } });
+    const trip = await this.tripRepository.findOne({ where: { id, isDeleted: false } });
     if (!trip) {
       throw new NotFoundException(`Trip with id ${id} not found`);
     }
@@ -44,7 +51,7 @@ export class TripService {
   }
 
   async listTrips(filter: ListTripsFilter): Promise<TripEntity[]> {
-    const qb = this.tripRepository.createQueryBuilder('trip');
+    const qb = this.tripRepository.createQueryBuilder('trip').andWhere('trip.is_deleted = false');
 
     if (filter.userId) {
       qb.andWhere('trip.user_id = :userId', { userId: filter.userId });
@@ -87,6 +94,43 @@ export class TripService {
     trip.title = title;
     trip.description = description;
     return this.tripRepository.save(trip);
+  }
+
+  async updateTrip(id: string, userId: string, params: UpdateTripParams): Promise<TripEntity> {
+    const trip = await this.getOwnedTrip(id, userId);
+
+    if (params.stops) {
+      trip.stops = params.stops;
+      trip.stopCount = params.stops.length;
+    }
+    if (params.isPublic !== undefined) {
+      trip.isPublic = params.isPublic;
+    }
+    if (params.title !== undefined) {
+      trip.title = params.title;
+    }
+    if (params.description !== undefined) {
+      trip.description = params.description;
+    }
+
+    return this.tripRepository.save(trip);
+  }
+
+  async deleteTrip(id: string, userId: string): Promise<void> {
+    const trip = await this.getOwnedTrip(id, userId);
+    trip.isDeleted = true;
+    await this.tripRepository.save(trip);
+  }
+
+  private async getOwnedTrip(id: string, userId: string): Promise<TripEntity> {
+    const trip = await this.tripRepository.findOne({ where: { id, isDeleted: false } });
+    if (!trip) {
+      throw new NotFoundException(`Trip with id ${id} not found`);
+    }
+    if (trip.userId !== userId) {
+      throw new ForbiddenException('Bu seyahat üzerinde işlem yapma yetkiniz yok');
+    }
+    return trip;
   }
 
   async voteTrip(id: string, userId: string, score: number): Promise<TripEntity> {

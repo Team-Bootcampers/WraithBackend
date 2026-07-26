@@ -92,6 +92,28 @@ export interface VoteTripRequest {
   score: number;
 }
 
+export interface UpdateTripRequest {
+  id: string;
+  userId: string;
+  stops: TripStop[];
+  hasStops: boolean;
+  isPublic: boolean;
+  hasIsPublic: boolean;
+  title: string;
+  hasTitle: boolean;
+  description: string;
+  hasDescription: boolean;
+}
+
+export interface DeleteTripRequest {
+  id: string;
+  userId: string;
+}
+
+export interface DeleteTripResponse {
+  success: boolean;
+}
+
 export interface TripResponse {
   id: string;
   userId: string;
@@ -119,4 +141,6 @@ export interface TripServiceGrpcClient {
   listTrips(data: ListTripsRequest): Observable<ListTripsResponse>;
   publishTrip(data: PublishTripRequest): Observable<TripResponse>;
   voteTrip(data: VoteTripRequest): Observable<TripResponse>;
+  updateTrip(data: UpdateTripRequest): Observable<TripResponse>;
+  deleteTrip(data: DeleteTripRequest): Observable<DeleteTripResponse>;
 }

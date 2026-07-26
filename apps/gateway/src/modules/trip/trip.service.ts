@@ -1,4 +1,12 @@
-import { BadRequestException, Inject, Injectable, InternalServerErrorException, NotFoundException, OnModuleInit } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  OnModuleInit,
+} from '@nestjs/common';
 import { status } from '@grpc/grpc-js';
 import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
@@ -7,9 +15,11 @@ import { AiServiceGrpcClient } from '../ai-client/ai-service.interface';
 import { TRIP_PACKAGE } from '../trip-client/trip-client.module';
 import { TripResponse, TripServiceGrpcClient } from '../trip-client/trip-service.interface';
 import { CreateTripDto } from './dto/create-trip.dto';
+import { DeleteTripDto } from './dto/delete-trip.dto';
 import { ListTripsQueryDto } from './dto/list-trips-query.dto';
 import { PublishTripDto } from './dto/publish-trip.dto';
 import { TripResponseDto } from './dto/trip-response.dto';
+import { UpdateTripDto } from './dto/update-trip.dto';
 import { VoteTripDto } from './dto/vote-trip.dto';
 
 @Injectable()
@@ -58,6 +68,30 @@ export class TripService implements OnModuleInit {
       firstValueFrom(this.tripClient.voteTrip({ id, userId: dto.userId, score: dto.score })),
     );
     return this.toResponseDto(trip);
+  }
+
+  async updateTrip(id: string, dto: UpdateTripDto): Promise<TripResponseDto> {
+    const trip = await this.callAndMapErrors(() =>
+      firstValueFrom(
+        this.tripClient.updateTrip({
+          id,
+          userId: dto.userId,
+          stops: (dto.stops ?? []).map((stop) => ({ ...stop, endDate: stop.endDate ?? '' })),
+          hasStops: dto.stops !== undefined,
+          isPublic: dto.isPublic ?? false,
+          hasIsPublic: dto.isPublic !== undefined,
+          title: dto.title ?? '',
+          hasTitle: dto.title !== undefined,
+          description: dto.description ?? '',
+          hasDescription: dto.description !== undefined,
+        }),
+      ),
+    );
+    return this.toResponseDto(trip);
+  }
+
+  async deleteTrip(id: string, dto: DeleteTripDto): Promise<void> {
+    await this.callAndMapErrors(() => firstValueFrom(this.tripClient.deleteTrip({ id, userId: dto.userId })));
   }
 
   async listTrips(query: ListTripsQueryDto): Promise<TripResponseDto[]> {
@@ -150,6 +184,9 @@ export class TripService implements OnModuleInit {
       }
       if (grpcError.code === status.INVALID_ARGUMENT) {
         throw new BadRequestException(grpcError.details ?? 'Geçersiz istek');
+      }
+      if (grpcError.code === status.PERMISSION_DENIED) {
+        throw new ForbiddenException(grpcError.details ?? 'Bu işlem için yetkiniz yok');
       }
       throw error;
     }
