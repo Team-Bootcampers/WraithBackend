@@ -54,6 +54,7 @@ async function bootstrap() {
     .addTag('hotels')
     .addTag('restaurants')
     .addTag('attractions')
+    .addTag('trips')
     .addTag('auth')
     .addServer('https://wraithathon.gokhansal.com', 'API Gateway')
     .build();
