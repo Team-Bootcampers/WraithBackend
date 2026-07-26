@@ -2,7 +2,9 @@ import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateTripDto } from './dto/create-trip.dto';
 import { ListTripsQueryDto } from './dto/list-trips-query.dto';
+import { PublishTripDto } from './dto/publish-trip.dto';
 import { TripResponseDto } from './dto/trip-response.dto';
+import { VoteTripDto } from './dto/vote-trip.dto';
 import { TripService } from './trip.service';
 
 @ApiTags('trips')
@@ -34,5 +36,21 @@ export class TripController {
   @ApiResponse({ status: 200, type: TripResponseDto })
   getById(@Param('id') id: string): Promise<TripResponseDto> {
     return this.tripService.getTripById(id);
+  }
+
+  @Post(':id/publish')
+  @ApiOperation({ summary: 'Seyahati başlık ve açıklama vererek herkese açık (isPublic=true) yapar' })
+  @ApiParam({ name: 'id' })
+  @ApiResponse({ status: 201, type: TripResponseDto })
+  publish(@Param('id') id: string, @Body() dto: PublishTripDto): Promise<TripResponseDto> {
+    return this.tripService.publishTrip(id, dto);
+  }
+
+  @Post(':id/vote')
+  @ApiOperation({ summary: 'Seyahate 1-5 arası puan verir (aynı kullanıcı tekrar oy verirse güncellenir)' })
+  @ApiParam({ name: 'id' })
+  @ApiResponse({ status: 201, type: TripResponseDto })
+  vote(@Param('id') id: string, @Body() dto: VoteTripDto): Promise<TripResponseDto> {
+    return this.tripService.voteTrip(id, dto);
   }
 }

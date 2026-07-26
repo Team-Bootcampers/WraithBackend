@@ -85,9 +85,23 @@ export class TripEntity {
   @Column({ name: 'is_public', type: 'boolean', default: false })
   isPublic: boolean;
 
+  // Sadece public yapılırken (PublishTrip) doldurulur.
+  @Column({ type: 'varchar', nullable: true })
+  title: string | null;
+
+  @Column({ type: 'text', nullable: true })
+  description: string | null;
+
   // Popülerite metriği; GetTripById her çağrıldığında bir artırılır.
   @Column({ name: 'view_count', type: 'int', default: 0 })
   viewCount: number;
+
+  // trip_votes tablosundan hesaplanan denormalize ortalama/oy sayısı; her oydan sonra güncellenir.
+  @Column({ name: 'rating_average', type: 'float', default: 0 })
+  ratingAverage: number;
+
+  @Column({ name: 'rating_count', type: 'int', default: 0 })
+  ratingCount: number;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

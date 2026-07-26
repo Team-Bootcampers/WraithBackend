@@ -8,6 +8,10 @@ service TripService {
   rpc CreateTrip (CreateTripRequest) returns (TripResponse);
   rpc GetTripById (GetTripByIdRequest) returns (TripResponse);
   rpc ListTrips (ListTripsRequest) returns (ListTripsResponse);
+  // Seyahati herkese açık yapar (isPublic=true); başlık ve açıklama zorunludur.
+  rpc PublishTrip (PublishTripRequest) returns (TripResponse);
+  // Kullanıcı seyahate 1-5 arası puan verir; aynı kullanıcı tekrar oy verirse güncellenir.
+  rpc VoteTrip (VoteTripRequest) returns (TripResponse);
 }
 
 enum TransportType {
@@ -102,15 +106,32 @@ message ListTripsRequest {
   string cityName = 5;
 }
 
+message PublishTripRequest {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+}
+
+message VoteTripRequest {
+  string id = 1;
+  string userId = 2;
+  int32 score = 3;
+}
+
 message TripResponse {
   string id = 1;
   string userId = 2;
   int32 stopCount = 3;
   repeated TripStop stops = 4;
   bool isPublic = 5;
-  int32 viewCount = 6;
-  string createdAt = 7;
-  string updatedAt = 8;
+  // Public değilse boş string.
+  string title = 6;
+  string description = 7;
+  int32 viewCount = 8;
+  double ratingAverage = 9;
+  int32 ratingCount = 10;
+  string createdAt = 11;
+  string updatedAt = 12;
 }
 
 message ListTripsResponse {

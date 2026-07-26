@@ -1,4 +1,4 @@
-import { Controller, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Controller, NotFoundException } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
 import { TripEntity, TripStop } from './entities/trip.entity';
@@ -24,6 +24,18 @@ interface ListTripsRequest {
   sortByPopularity?: boolean;
   country?: string;
   cityName?: string;
+}
+
+interface PublishTripRequest {
+  id: string;
+  title: string;
+  description: string;
+}
+
+interface VoteTripRequest {
+  id: string;
+  userId: string;
+  score: number;
 }
 
 @Controller()
@@ -66,6 +78,35 @@ export class TripController {
     };
   }
 
+  @GrpcMethod('TripService', 'PublishTrip')
+  async publishTrip(data: PublishTripRequest) {
+    try {
+      const trip = await this.tripService.publishTrip(data.id, data.title, data.description);
+      return this.toResponse(trip);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new RpcException({ code: status.NOT_FOUND, message: error.message });
+      }
+      throw new RpcException({ code: status.INTERNAL, message: error.message });
+    }
+  }
+
+  @GrpcMethod('TripService', 'VoteTrip')
+  async voteTrip(data: VoteTripRequest) {
+    try {
+      const trip = await this.tripService.voteTrip(data.id, data.userId, data.score);
+      return this.toResponse(trip);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new RpcException({ code: status.NOT_FOUND, message: error.message });
+      }
+      if (error instanceof BadRequestException) {
+        throw new RpcException({ code: status.INVALID_ARGUMENT, message: error.message });
+      }
+      throw new RpcException({ code: status.INTERNAL, message: error.message });
+    }
+  }
+
   private fromGrpcStop(stop: GrpcTripStop): TripStop {
     return {
       ...stop,
@@ -80,7 +121,11 @@ export class TripController {
       stopCount: trip.stopCount,
       stops: trip.stops.map((stop) => ({ ...stop, endDate: stop.endDate ?? '' })),
       isPublic: trip.isPublic,
+      title: trip.title ?? '',
+      description: trip.description ?? '',
       viewCount: trip.viewCount,
+      ratingAverage: trip.ratingAverage,
+      ratingCount: trip.ratingCount,
       createdAt: trip.createdAt.toISOString(),
       updatedAt: trip.updatedAt.toISOString(),
     };

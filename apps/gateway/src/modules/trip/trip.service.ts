@@ -8,6 +8,9 @@ import { TRIP_PACKAGE } from '../trip-client/trip-client.module';
 import { TripResponse, TripServiceGrpcClient } from '../trip-client/trip-service.interface';
 import { CreateTripDto } from './dto/create-trip.dto';
 import { ListTripsQueryDto } from './dto/list-trips-query.dto';
+import { PublishTripDto } from './dto/publish-trip.dto';
+import { TripResponseDto } from './dto/trip-response.dto';
+import { VoteTripDto } from './dto/vote-trip.dto';
 
 @Injectable()
 export class TripService implements OnModuleInit {
@@ -24,8 +27,8 @@ export class TripService implements OnModuleInit {
     this.aiClient = this.aiClientProxy.getService<AiServiceGrpcClient>('AiService');
   }
 
-  createTrip(dto: CreateTripDto): Promise<TripResponse> {
-    return firstValueFrom(
+  async createTrip(dto: CreateTripDto): Promise<TripResponseDto> {
+    const trip = await firstValueFrom(
       this.tripClient.createTrip({
         userId: dto.userId,
         isPublic: dto.isPublic ?? false,
@@ -35,13 +38,29 @@ export class TripService implements OnModuleInit {
         })),
       }),
     );
+    return this.toResponseDto(trip);
   }
 
-  getTripById(id: string): Promise<TripResponse> {
-    return this.callAndMapErrors(() => firstValueFrom(this.tripClient.getTripById({ id })));
+  async getTripById(id: string): Promise<TripResponseDto> {
+    const trip = await this.callAndMapErrors(() => firstValueFrom(this.tripClient.getTripById({ id })));
+    return this.toResponseDto(trip);
   }
 
-  async listTrips(query: ListTripsQueryDto): Promise<TripResponse[]> {
+  async publishTrip(id: string, dto: PublishTripDto): Promise<TripResponseDto> {
+    const trip = await this.callAndMapErrors(() =>
+      firstValueFrom(this.tripClient.publishTrip({ id, title: dto.title, description: dto.description })),
+    );
+    return this.toResponseDto(trip);
+  }
+
+  async voteTrip(id: string, dto: VoteTripDto): Promise<TripResponseDto> {
+    const trip = await this.callAndMapErrors(() =>
+      firstValueFrom(this.tripClient.voteTrip({ id, userId: dto.userId, score: dto.score })),
+    );
+    return this.toResponseDto(trip);
+  }
+
+  async listTrips(query: ListTripsQueryDto): Promise<TripResponseDto[]> {
     if (query.personalized) {
       if (!query.userId || !query.personalityAnalysis) {
         throw new BadRequestException('personalized=true için userId ve personalityAnalysis zorunludur');
@@ -66,11 +85,13 @@ export class TripService implements OnModuleInit {
         }),
       );
 
+      let recommended: TripResponse[];
       try {
-        return JSON.parse(recommendation.result) as TripResponse[];
+        recommended = JSON.parse(recommendation.result) as TripResponse[];
       } catch {
         throw new InternalServerErrorException('ai-service geçerli bir seyahat önerisi döndürmedi');
       }
+      return recommended.map((trip) => this.toResponseDto(trip));
     }
 
     const response = await firstValueFrom(
@@ -82,7 +103,41 @@ export class TripService implements OnModuleInit {
         cityName: query.city,
       }),
     );
-    return response.trips;
+    return response.trips.map((trip) => this.toResponseDto(trip));
+  }
+
+  private toResponseDto(trip: TripResponse): TripResponseDto {
+    return {
+      ...trip,
+      coverImage: this.resolveCoverImage(trip),
+      durationDays: this.resolveDurationDays(trip),
+    };
+  }
+
+  // İlk durağın ilk otelinden, yoksa gezilecek yerinden, yoksa restoranından ilk görsel; hiçbiri yoksa sonraki duraklara bakılır.
+  private resolveCoverImage(trip: TripResponse): string {
+    for (const stop of trip.stops) {
+      const image = stop.hotels[0]?.images[0] ?? stop.attractions[0]?.images[0] ?? stop.restaurants[0]?.images[0];
+      if (image) {
+        return image;
+      }
+    }
+    return '';
+  }
+
+  // İlk durağın başlangıcından son durağın bitişine (yoksa başlangıcına) kadar toplam gün sayısı.
+  private resolveDurationDays(trip: TripResponse): number {
+    if (trip.stops.length === 0) {
+      return 0;
+    }
+
+    const firstStop = trip.stops[0];
+    const lastStop = trip.stops[trip.stops.length - 1];
+    const start = new Date(firstStop.startDate);
+    const end = new Date(lastStop.endDate || lastStop.startDate);
+
+    const diffDays = Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+    return Math.max(1, diffDays);
   }
 
   private async callAndMapErrors<T>(call: () => Promise<T>): Promise<T> {
@@ -92,6 +147,9 @@ export class TripService implements OnModuleInit {
       const grpcError = error as { code?: number; details?: string };
       if (grpcError.code === status.NOT_FOUND) {
         throw new NotFoundException(grpcError.details ?? 'Seyahat bulunamadı');
+      }
+      if (grpcError.code === status.INVALID_ARGUMENT) {
+        throw new BadRequestException(grpcError.details ?? 'Geçersiz istek');
       }
       throw error;
     }

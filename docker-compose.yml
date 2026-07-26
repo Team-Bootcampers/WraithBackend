@@ -292,7 +292,8 @@ services:
     image: cloudflare/cloudflared:latest
     # QUIC/UDP bazı Docker ağlarında bloklanıyor; edge bağlantısı QUIC ile sürekli
     # başarısız olup (Error 1033) tünel hiç kurulamıyorsa http2'ye sabitlenir.
-    command: tunnel --no-autoupdate --protocol http2 run --token eyJhIjoiY2MyZmEwZmU1NjUxYjM1ZGU0MDMxYTQ1ZDI0ZDBhYWIiLCJ0IjoiOTViNzA3NDItODI1MC00ODhjLWFjMGQtOTM5YjIyMzU4ZTMyIiwicyI6IlpUaGpOamN6WmpBdFpUbGhPUzAwTXpobExUZzNZekl0T0RBMFpUaGhNakJtTWpReiJ9
+    env_file: .env
+    command: tunnel --no-autoupdate --protocol http2 run --token ${CLOUDFLARE_TUNNEL_TOKEN}
     networks:
       - backbone
     restart: unless-stopped
